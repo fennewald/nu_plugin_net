@@ -1,6 +1,6 @@
 extern crate pnet;
 use nu_plugin::{self, EvaluatedCall, LabeledError};
-use nu_protocol::{Category, Signature, SyntaxShape, Value};
+use nu_protocol::{Category, Signature, Value};
 use pnet::datalink::{self, MacAddr, NetworkInterface};
 use pnet::ipnetwork::IpNetwork;
 
@@ -88,7 +88,7 @@ fn ips_to_nu(call: &EvaluatedCall, ips: &[IpNetwork]) -> Value {
 impl nu_plugin::Plugin for Plugin {
     fn signature(&self) -> Vec<Signature> {
         vec![Signature::build("net")
-            .usage("List current network interfaces")
+            .usage("List network interfaces")
             .category(Category::Experimental)]
     }
 

@@ -19,7 +19,7 @@ Format may be subject to change.
 ```
 
 ```
-~> net | flatten flags                                                                                                                                                                                                                                                                            07/28/2022 04:36:27 PM
+~> net | flatten flags
 ╭───┬──────────┬─────────────┬───────────────────┬────────────────┬───────┬──────────────┬─────────────┬───────────────────┬──────────────╮
 │ # │   name   │ description │        mac        │      ips       │ is_up │ is_broadcast │ is_loopback │ is_point_to_point │ is_multicast │
 ├───┼──────────┼─────────────┼───────────────────┼────────────────┼───────┼──────────────┼─────────────┼───────────────────┼──────────────┤
@@ -30,7 +30,7 @@ Format may be subject to change.
 ```
 
 ```
-~> net | select ips | flatten | flatten                                                                                                                                                                                                                                                           07/28/2022 04:37:37 PM
+~> net | select ips | flatten | flatten
 ╭───┬──────┬──────────────────────────────┬────────╮
 │ # │ type │             addr             │ prefix │
 ├───┼──────┼──────────────────────────────┼────────┤

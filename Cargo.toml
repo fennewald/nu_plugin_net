@@ -1,0 +1,9 @@
+[package]
+name = "nu_plugin_net"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pnet = { version = "0.31", features = ["std"] }
+nu-plugin = "0.66.1"
+nu-protocol = { version = "0.66.1", features = ["plugin"] }

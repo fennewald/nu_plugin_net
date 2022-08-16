@@ -42,3 +42,11 @@ Format may be subject to change.
 │ 5 │ v6   │ fe80::cae2:65ff:fec3:942/64  │     64 │
 ╰───┴──────┴──────────────────────────────┴────────╯
 ```
+
+# Installing
+
+This plugin uses the `capnp` encoding. To register:
+
+```
+register -e capnp <path to plugin binary>
+```

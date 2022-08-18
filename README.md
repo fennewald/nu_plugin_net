@@ -50,3 +50,9 @@ This plugin uses the `capnp` encoding. To register:
 ```
 register -e capnp <path to plugin binary>
 ```
+
+# Changelog
+
+Version 1.1.0
+
+Use `if_index` instead of `index`, fixing the way table indexes are displayed

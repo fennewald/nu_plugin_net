@@ -101,7 +101,7 @@ impl nu_plugin::Plugin for Plugin {
         let cols = vec![
             "name".to_string(),
             "description".to_string(),
-            "index".to_string(),
+            "if_index".to_string(),
             "mac".to_string(),
             "ips".to_string(),
             "flags".to_string(),

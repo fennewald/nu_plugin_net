@@ -137,5 +137,5 @@ impl nu_plugin::Plugin for Plugin {
 }
 
 fn main() {
-    nu_plugin::serve_plugin(&mut Plugin {}, nu_plugin::CapnpSerializer {})
+    nu_plugin::serve_plugin(&mut Plugin {}, nu_plugin::JsonSerializer {})
 }

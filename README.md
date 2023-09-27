@@ -45,14 +45,32 @@ Format may be subject to change.
 
 # Installing
 
-This plugin uses the `capnp` encoding. To register:
+This plugin can either be installed from crates.io, or built from source.
 
+To install using cargo, run:
 ```
-register -e capnp <path to plugin binary>
+cargo install nu_plugin_net
+```
+
+To build from source, use:
+```
+git clone https://github.com/fennewald/nu_plugin_net.git
+cd nu_plugin_net
+cargo install --path .
+```
+
+Both of these processes will place a binary in `~/.cargo/bin/nu_plugin_net`
+To register the plugin for use, just run:
+```
+register ~/.cargo/bin/nu_plugin_net
 ```
 
 # Changelog
 
-Version 1.1.0
+## Version 1.2.0
 
-Use `if_index` instead of `index`, fixing the way table indexes are displayed
+* Update for Nushell 0.84
+
+## Version 1.1.0
+
+* Use `if_index` instead of `index`, fixing the way table indexes are displayed

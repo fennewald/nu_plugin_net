@@ -67,11 +67,10 @@ register ~/.cargo/bin/nu_plugin_net
 
 # Changelog
 
-## Version 1.1.0
-
-* Use `if_index` instead of `index`, fixing the way table indexes are displayed
-
 ## Version 1.2.0
 
 * Update for Nushell 0.84
 
+## Version 1.1.0
+
+* Use `if_index` instead of `index`, fixing the way table indexes are displayed

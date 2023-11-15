@@ -1,94 +1,50 @@
 extern crate pnet;
 use nu_plugin::{self, EvaluatedCall, LabeledError};
-use nu_protocol::{Category, PluginSignature, Record, Value};
+use nu_protocol::{record, Category, PluginSignature, Span, Value};
 use pnet::datalink::{self, MacAddr, NetworkInterface};
 use pnet::ipnetwork::IpNetwork;
 
 pub struct Plugin;
 
-fn flags_to_nu(call: &EvaluatedCall, interface: &NetworkInterface) -> Value {
-    Value::Record {
-        val: Record {
-            cols: vec![
-                "is_up".to_string(),
-                "is_broadcast".to_string(),
-                "is_loopback".to_string(),
-                "is_point_to_point".to_string(),
-                "is_multicast".to_string(),
-            ],
-            vals: vec![
-                Value::Bool {
-                    val: interface.is_up(),
-                    internal_span: call.head,
-                },
-                Value::Bool {
-                    val: interface.is_broadcast(),
-                    internal_span: call.head,
-                },
-                Value::Bool {
-                    val: interface.is_loopback(),
-                    internal_span: call.head,
-                },
-                Value::Bool {
-                    val: interface.is_point_to_point(),
-                    internal_span: call.head,
-                },
-                Value::Bool {
-                    val: interface.is_multicast(),
-                    internal_span: call.head,
-                },
-            ],
+fn flags_to_nu(span: Span, interface: &NetworkInterface) -> Value {
+    Value::record(
+        record! {
+            "is_up"=> Value::bool(interface.is_up(),span),
+            "is_broadcast"=> Value::bool(interface.is_broadcast(),span),
+            "is_loopback"=> Value::bool(interface.is_loopback(),span),
+            "is_point_to_point"=> Value::bool(interface.is_point_to_point(),span),
+            "is_multicast"=> Value::bool(interface.is_multicast(),span)
         },
-        internal_span: call.head,
-    }
+        span,
+    )
 }
 
-fn mac_to_nu(call: &EvaluatedCall, mac: Option<MacAddr>) -> Value {
+fn mac_to_nu(span: Span, mac: Option<MacAddr>) -> Value {
     if let Some(mac) = mac {
-        Value::String {
-            val: format!("{}", mac),
-            internal_span: call.head,
-        }
+        Value::string(mac.to_string(), span)
     } else {
-        Value::Nothing {
-            internal_span: call.head,
-        }
+        Value::nothing(span)
     }
 }
 
-fn ip_to_nu(call: &EvaluatedCall, ip: &IpNetwork) -> Value {
+fn ip_to_nu(span: Span, ip: &IpNetwork) -> Value {
     let type_name = match ip {
         IpNetwork::V4(..) => "v4",
         IpNetwork::V6(..) => "v6",
     };
-    Value::Record {
-        val: Record {
-            cols: vec!["type".to_string(), "addr".to_string(), "prefix".to_string()],
-            vals: vec![
-                Value::String {
-                    val: type_name.to_string(),
-                    internal_span: call.head,
-                },
-                Value::String {
-                    val: format!("{}", ip),
-                    internal_span: call.head,
-                },
-                Value::Int {
-                    val: ip.prefix() as i64,
-                    internal_span: call.head,
-                },
-            ],
+    Value::record(
+        record! {
+            "type" => Value::string(type_name, span),
+            "addr" => Value::string(ip.to_string(), span),
+            "prefix" => Value::int(ip.prefix().into(), span)
         },
-        internal_span: call.head,
-    }
+        span,
+    )
 }
 
 /// Convert a slice of ipnetworks to nushell values
-fn ips_to_nu(call: &EvaluatedCall, ips: &[IpNetwork]) -> Value {
-    Value::List {
-        vals: ips.iter().map(|ip| ip_to_nu(call, ip)).collect(),
-        internal_span: call.head,
-    }
+fn ips_to_nu(span: Span, ips: &[IpNetwork]) -> Value {
+    Value::list(ips.iter().map(|ip| ip_to_nu(span, ip)).collect(), span)
 }
 
 impl nu_plugin::Plugin for Plugin {
@@ -104,43 +60,25 @@ impl nu_plugin::Plugin for Plugin {
         call: &EvaluatedCall,
         _input: &Value,
     ) -> Result<Value, LabeledError> {
-        let cols = vec![
-            "name".to_string(),
-            "description".to_string(),
-            "if_index".to_string(),
-            "mac".to_string(),
-            "ips".to_string(),
-            "flags".to_string(),
-        ];
-        Ok(Value::List {
-            vals: datalink::interfaces()
+        Ok(Value::list(
+            datalink::interfaces()
                 .iter_mut()
-                .map(|interface| Value::Record {
-                    val: Record {
-                        cols: cols.clone(),
-                        vals: vec![
-                            Value::String {
-                                val: interface.name.clone(),
-                                internal_span: call.head,
-                            },
-                            Value::String {
-                                val: interface.description.clone(),
-                                internal_span: call.head,
-                            },
-                            Value::Int {
-                                val: interface.index as i64,
-                                internal_span: call.head,
-                            },
-                            mac_to_nu(call, interface.mac),
-                            ips_to_nu(call, &interface.ips),
-                            flags_to_nu(call, interface),
-                        ],
-                    },
-                    internal_span: call.head,
+                .map(|interface| {
+                    Value::record(
+                        record!{
+                            "name"=>   Value::string(interface.name.clone(), call.head),
+                            "description"=>   Value::string(interface.description.clone(), call.head),
+                            "if_index"=>   Value::int(interface.index.into(), call.head),
+                            "mac"=>  mac_to_nu(call.head, interface.mac),
+                            "ips"=> ips_to_nu(call.head, &interface.ips),
+                            "flags"=>  flags_to_nu(call.head, interface),
+                        },
+                        call.head,
+                    )
                 })
                 .collect(),
-            internal_span: call.head,
-        })
+            call.head,
+        ))
     }
 }
 

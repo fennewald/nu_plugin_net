@@ -67,6 +67,11 @@ register ~/.cargo/bin/nu_plugin_net
 
 # Changelog
 
+## Version 1.3.0
+
+* (@FMotalleb) Bump dependency versions
+* (@FMotalleb) Refactor: replaced structs with standard constructors
+
 ## Version 1.2.0
 
 * Update for Nushell 0.84

@@ -6,7 +6,7 @@ keywords = ["nushell", "network", "plugin"]
 homepage = "https://github.com/fennewald/nu_plugin_net"
 repository = "https://github.com/fennewald/nu_plugin_net"
 description = "A nushell plugin for enumerating network interfaces in a platform-agnostic way"
-version = "1.2.0"
+version = "1.3.0"
 edition = "2021"
 readme = "README.md"
 

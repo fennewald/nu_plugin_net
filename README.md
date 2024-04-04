@@ -67,6 +67,10 @@ register ~/.cargo/bin/nu_plugin_net
 
 # Changelog
 
+## Version 1.4.0
+
+* (@oraoto) Update for Nushell 0.92
+
 ## Version 1.3.0
 
 * (@FMotalleb) Bump dependency versions

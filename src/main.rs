@@ -61,7 +61,7 @@ impl nu_plugin::SimplePluginCommand for NetCommand {
     }
 
     fn usage(&self) -> &str {
-        "List netowrk interfaces"
+        "List network interfaces"
     }
 
     fn signature(&self) -> Signature {

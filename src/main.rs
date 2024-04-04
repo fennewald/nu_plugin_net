@@ -1,10 +1,10 @@
-extern crate pnet;
-use nu_plugin::{self, EvaluatedCall, LabeledError};
-use nu_protocol::{record, Category, PluginSignature, Span, Value};
+use nu_plugin::{EngineInterface, EvaluatedCall, PluginCommand};
+use nu_protocol::{record, Category, LabeledError, Signature, Span, Type, Value};
 use pnet::datalink::{self, MacAddr, NetworkInterface};
 use pnet::ipnetwork::IpNetwork;
 
 pub struct Plugin;
+pub struct NetCommand;
 
 fn flags_to_nu(span: Span, interface: &NetworkInterface) -> Value {
     Value::record(
@@ -48,15 +48,32 @@ fn ips_to_nu(span: Span, ips: &[IpNetwork]) -> Value {
 }
 
 impl nu_plugin::Plugin for Plugin {
-    fn signature(&self) -> Vec<PluginSignature> {
-        vec![PluginSignature::build("net")
-            .usage("List network interfaces")
-            .category(Category::Experimental)]
+    fn commands(&self) -> Vec<Box<dyn PluginCommand<Plugin = Self>>> {
+        vec![Box::new(NetCommand)]
+    }
+}
+
+impl nu_plugin::SimplePluginCommand for NetCommand {
+    type Plugin = Plugin;
+
+    fn name(&self) -> &str {
+        "net"
+    }
+
+    fn usage(&self) -> &str {
+        "List netowrk interfaces"
+    }
+
+    fn signature(&self) -> Signature {
+        Signature::build(PluginCommand::name(self))
+            .input_output_type(Type::Nothing, Type::Any)
+            .category(Category::Network)
     }
 
     fn run(
-        &mut self,
-        _name: &str,
+        &self,
+        _plugin: &Plugin,
+        _engine: &EngineInterface,
         call: &EvaluatedCall,
         _input: &Value,
     ) -> Result<Value, LabeledError> {
@@ -83,5 +100,5 @@ impl nu_plugin::Plugin for Plugin {
 }
 
 fn main() {
-    nu_plugin::serve_plugin(&mut Plugin {}, nu_plugin::JsonSerializer {})
+    nu_plugin::serve_plugin(&Plugin {}, nu_plugin::JsonSerializer {})
 }

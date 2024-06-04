@@ -62,10 +62,16 @@ cargo install --path .
 Both of these processes will place a binary in `~/.cargo/bin/nu_plugin_net`
 To register the plugin for use, just run:
 ```
-register ~/.cargo/bin/nu_plugin_net
+plugin add ~/.cargo/bin/nu_plugin_net
 ```
 
 # Changelog
+
+## Version 1.5.0
+
+* Update for Nushell 0.94.2
+
+Maintainer note: Sorry for the inconsitencies. From now on, nushell version updates will include minor version bumps
 
 ## Version 1.4.1
 

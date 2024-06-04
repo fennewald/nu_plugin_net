@@ -1007,7 +1007,7 @@ dependencies = [
 
 [[package]]
 name = "nu_plugin_net"
-version = "1.4.0"
+version = "1.4.1"
 dependencies = [
  "nu-plugin",
  "nu-protocol",

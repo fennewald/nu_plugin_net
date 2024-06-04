@@ -6,11 +6,11 @@ keywords = ["nushell", "network", "plugin"]
 homepage = "https://github.com/fennewald/nu_plugin_net"
 repository = "https://github.com/fennewald/nu_plugin_net"
 description = "A nushell plugin for enumerating network interfaces in a platform-agnostic way"
-version = "1.4.1"
+version = "1.5.0"
 edition = "2021"
 readme = "README.md"
 
 [dependencies]
 pnet = { version = "0.34", features = ["std"] }
-nu-plugin = "0.93.0"
-nu-protocol = { version = "0.93.0", features = ["plugin"] }
+nu-plugin = "0.94.2"
+nu-protocol = { version = "0.94.2", features = ["plugin"] }

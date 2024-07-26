@@ -67,6 +67,10 @@ plugin add ~/.cargo/bin/nu_plugin_net
 
 # Changelog
 
+## Version 1.6.0
+
+* Update for Nushell 0.96.0
+
 ## Version 1.5.0
 
 * Update for Nushell 0.94.2

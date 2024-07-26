@@ -6,6 +6,8 @@ use pnet::ipnetwork::IpNetwork;
 pub struct Plugin;
 pub struct NetCommand;
 
+const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 fn flags_to_nu(span: Span, interface: &NetworkInterface) -> Value {
     Value::record(
         record! {
@@ -48,6 +50,10 @@ fn ips_to_nu(span: Span, ips: &[IpNetwork]) -> Value {
 }
 
 impl nu_plugin::Plugin for Plugin {
+    fn version(&self) -> String {
+        VERSION.to_string()
+    }
+
     fn commands(&self) -> Vec<Box<dyn PluginCommand<Plugin = Self>>> {
         vec![Box::new(NetCommand)]
     }

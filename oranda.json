@@ -1,0 +1,5 @@
+{
+  "build": {
+    "path_prefix": "nu_plugin_net"
+  }
+}

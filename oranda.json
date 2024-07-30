@@ -1,5 +1,14 @@
 {
   "build": {
     "path_prefix": "nu_plugin_net"
+  },
+  "components": {
+    "artifacts": {
+      "pacakge_managers": {
+        "preferred": {
+          "crates.io": "cargo install nu_plugin_net --locked"
+        }
+      }
+    }
   }
 }

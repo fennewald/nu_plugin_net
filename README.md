@@ -1,3 +1,17 @@
+
+
+* resolve
+* dns dig
+* whois
+* ping
+* arp
+* tcp syn
+* trace route
+* routing tables
+
+# TODO: shout out nu_plugin_dns
+
+
 # nu_plugin_net
 A nushell plugin to list system network interfaces
 

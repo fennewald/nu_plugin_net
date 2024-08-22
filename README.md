@@ -1,6 +1,3 @@
-# TODO: shout out nu_plugin_dns
-
-
 # nu_plugin_net
 A nushell plugin to list system network interfaces
 
@@ -8,7 +5,8 @@ A simple and straightforward plugin. All of the heavy lifting is done by pnet. T
 
 Format may be subject to change.
 
-# Version 2.0 Is in the Works
+> [!note] 
+> Version 2.0 Is in the Works
 
 Version 2 of this plugin is actively being prepared. Some imporant objectives:
 * Automate the nushell version update process

@@ -41,7 +41,7 @@ fn map_flags(inf: &NetworkInterface, span: Span) -> Value {
 
 /// Maps a network interface to a nushell record
 fn map_interface(inf: NetworkInterface, span: Span) -> Value {
-    let mut o = Record::with_capacity(5);
+    let mut o = Record::with_capacity(6);
 
     // Measure flags first so that we can partially move out of inf
     let flags = map_flags(&inf, span);

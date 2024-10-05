@@ -75,7 +75,7 @@ impl SimplePluginCommand for InterfacesCommand {
         "net"
     }
 
-    fn usage(&self) -> &str {
+    fn description(&self) -> &str {
         "Enumerate network interfaces on the current host"
     }
 

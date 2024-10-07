@@ -1,14 +1,14 @@
 # nu_plugin_net
 A nushell plugin to list system network interfaces
 
-A simple and straightforward plugin. All of the heavy lifting is done by pnet. This package just translates the datatypes into a nu-accepatble format.
+A simple and straightforward plugin. All of the heavy lifting is done by pnet. This package just translates the datatypes into a nu-acceptable format.
 
 Format may be subject to change.
 
 > [!note] 
 > Version 2.0 Is in the Works
 
-Version 2 of this plugin is actively being prepared. Some imporant objectives:
+Version 2 of this plugin is actively being prepared. Some important objectives:
 * Automate the nushell version update process
 * Setup a website, more clear installation instructions
 * Add support for additional commands

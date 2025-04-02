@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" id="oranda" class="dark">
+  <head>
+    <title>nu_plugin_net</title>
+    
+      <meta property="og:url" content="https://github.com/fennewald/nu_plugin_net" />
+    
+    
+      <link rel="icon" href="/nu_plugin_net/favicon.ico" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+      <meta name="description" content="A nushell plugin for enumerating network interfaces in a platform-agnostic way" />
+      <meta property="og:description" content="A nushell plugin for enumerating network interfaces in a platform-agnostic way" />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="nu_plugin_net" />
+    
+    
+    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <link rel="stylesheet" href="/nu_plugin_net/oranda-v0.6.1.css" />
+    
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-body">
+        
+          <div class="repo_banner">
+            <a href="https://github.com/fennewald/nu_plugin_net">
+              <div class="github-icon" aria-hidden="true"></div>
+              Check out our GitHub!
+            </a>
+          </div>
+        
+
+        <main>
+          <header>
+            
+            <h1 class="title">nu_plugin_net</h1>
+            
+  <nav class="nav">
+    <ul>
+      <li><a href="/nu_plugin_net/">Home</a></li>
+
+      
+
+      
+        <li><a href="/nu_plugin_net/artifacts/">Install</a></li>
+      
+
+      
+
+      
+
+      
+        <li><a href="/nu_plugin_net/changelog/">Changelog</a></li>
+      
+    </ul>
+  </nav>
+
+          </header>
+
+          
+
+    
+
+
+
+<div class="artifacts" data-tag="1.9.0">
+  <div class="artifact-header target">
+    <h4>Install 1.9.0</h4>
+    
+      <div><small class="published-date">Published on Apr  2 2025 at 22:07 UTC</small></div>
+    
+
+    <ul class="arches">
+      
+        <li class="arch hidden" data-arch="aarch64-apple-darwin">
+          
+            <ul class="tabs">
+              
+                
+                
+                <li class="install-tab" data-id="4" data-triple="aarch64-apple-darwin">
+                  shell
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="3" data-triple="aarch64-apple-darwin">
+                  crates.io
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="0" data-triple="aarch64-apple-darwin">
+                  tarball
+
+                  
+                </li>
+              
+            </ul>
+          
+
+          <ul class="contents">
+            
+              
+              <li data-id="4" data-triple="aarch64-apple-darwin" class="install-content">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">curl</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">proto </span><span style="color:#89ddff;">&#39;</span><span style="color:#c3e88d;">=https</span><span style="color:#89ddff;">&#39; --</span><span style="color:#f78c6c;">tlsv1</span><span style="color:#82aaff;">.2</span><span style="color:#89ddff;"> -</span><span style="color:#f78c6c;">LsSf</span><span style="color:#82aaff;"> https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh </span><span style="color:#89ddff;">| </span><span style="color:#82aaff;">sh</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="curl --proto '=https' --tlsv1.2 -LsSf https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh | sh">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+    
+    
+      
+    
+    <a class="button primary" href="/nu_plugin_net/nu_plugin_net-installer.sh.txt">Source</a>
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="3" data-triple="aarch64-apple-darwin" class="install-content hidden">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">cargo install nu_plugin_net</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">locked</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="cargo install nu_plugin_net --locked">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="0" data-triple="aarch64-apple-darwin" class="install-content hidden">
+                
+
+                
+                  
+                  <div class="download-wrapper">
+                    <a href="https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-aarch64-apple-darwin.tar.xz">
+                      <button class="button primary">
+                        <span>Download</span>
+                        <span class="button-subtitle">nu_plugin_net-aarch64-apple-darwin.tar.xz</span>
+                      </button>
+                    </a>
+                  </div>
+                
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li class="arch hidden" data-arch="x86_64-apple-darwin">
+          
+            <ul class="tabs">
+              
+                
+                
+                <li class="install-tab" data-id="4" data-triple="x86_64-apple-darwin">
+                  shell
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="3" data-triple="x86_64-apple-darwin">
+                  crates.io
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="1" data-triple="x86_64-apple-darwin">
+                  tarball
+
+                  
+                </li>
+              
+            </ul>
+          
+
+          <ul class="contents">
+            
+              
+              <li data-id="4" data-triple="x86_64-apple-darwin" class="install-content">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">curl</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">proto </span><span style="color:#89ddff;">&#39;</span><span style="color:#c3e88d;">=https</span><span style="color:#89ddff;">&#39; --</span><span style="color:#f78c6c;">tlsv1</span><span style="color:#82aaff;">.2</span><span style="color:#89ddff;"> -</span><span style="color:#f78c6c;">LsSf</span><span style="color:#82aaff;"> https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh </span><span style="color:#89ddff;">| </span><span style="color:#82aaff;">sh</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="curl --proto '=https' --tlsv1.2 -LsSf https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh | sh">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+    
+    
+      
+    
+    <a class="button primary" href="/nu_plugin_net/nu_plugin_net-installer.sh.txt">Source</a>
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="3" data-triple="x86_64-apple-darwin" class="install-content hidden">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">cargo install nu_plugin_net</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">locked</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="cargo install nu_plugin_net --locked">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="1" data-triple="x86_64-apple-darwin" class="install-content hidden">
+                
+
+                
+                  
+                  <div class="download-wrapper">
+                    <a href="https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-x86_64-apple-darwin.tar.xz">
+                      <button class="button primary">
+                        <span>Download</span>
+                        <span class="button-subtitle">nu_plugin_net-x86_64-apple-darwin.tar.xz</span>
+                      </button>
+                    </a>
+                  </div>
+                
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li class="arch hidden" data-arch="x86_64-pc-windows-msvc">
+          
+
+          <ul class="contents">
+            
+              
+              <li data-id="3" data-triple="x86_64-pc-windows-msvc" class="install-content">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">cargo install nu_plugin_net</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">locked</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="cargo install nu_plugin_net --locked">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+</div>
+                
+
+                
+              </li>
+            
+          </ul>
+        </li>
+      
+        <li class="arch hidden" data-arch="x86_64-unknown-linux-gnu">
+          
+            <ul class="tabs">
+              
+                
+                
+                <li class="install-tab" data-id="4" data-triple="x86_64-unknown-linux-gnu">
+                  shell
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="3" data-triple="x86_64-unknown-linux-gnu">
+                  crates.io
+
+                  
+                </li>
+              
+                
+                
+                <li class="install-tab" data-id="2" data-triple="x86_64-unknown-linux-gnu">
+                  tarball
+
+                  
+                </li>
+              
+            </ul>
+          
+
+          <ul class="contents">
+            
+              
+              <li data-id="4" data-triple="x86_64-unknown-linux-gnu" class="install-content">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">curl</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">proto </span><span style="color:#89ddff;">&#39;</span><span style="color:#c3e88d;">=https</span><span style="color:#89ddff;">&#39; --</span><span style="color:#f78c6c;">tlsv1</span><span style="color:#82aaff;">.2</span><span style="color:#89ddff;"> -</span><span style="color:#f78c6c;">LsSf</span><span style="color:#82aaff;"> https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh </span><span style="color:#89ddff;">| </span><span style="color:#82aaff;">sh</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="curl --proto '=https' --tlsv1.2 -LsSf https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-installer.sh | sh">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+    
+    
+      
+    
+    <a class="button primary" href="/nu_plugin_net/nu_plugin_net-installer.sh.txt">Source</a>
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="3" data-triple="x86_64-unknown-linux-gnu" class="install-content hidden">
+                
+                  
+                  <div class="install-code-wrapper">
+  <pre style="background-color:#263238;">
+<span style="color:#82aaff;">cargo install nu_plugin_net</span><span style="color:#89ddff;"> --</span><span style="color:#f78c6c;">locked</span></pre>
+
+  <button class="button copy-clipboard-button primary" data-copy="cargo install nu_plugin_net --locked">
+    <svg stroke='currentColor' fill='currentColor' stroke-width='0' viewBox='0 0 20 20' height='1em' width='1em' xmlns='http://www.w3.org/2000/svg'><path d='M8 2a1 1 0 000 2h2a1 1 0 100-2H8z'></path><path d='M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z'></path></svg>
+  </button>
+  
+  
+</div>
+                
+
+                
+              </li>
+            
+              
+              <li data-id="2" data-triple="x86_64-unknown-linux-gnu" class="install-content hidden">
+                
+
+                
+                  
+                  <div class="download-wrapper">
+                    <a href="https://github.com/fennewald/nu_plugin_net/releases/download/1.9.0/nu_plugin_net-x86_64-unknown-linux-gnu.tar.xz">
+                      <button class="button primary">
+                        <span>Download</span>
+                        <span class="button-subtitle">nu_plugin_net-x86_64-unknown-linux-gnu.tar.xz</span>
+                      </button>
+                    </a>
+                  </div>
+                
+              </li>
+            
+          </ul>
+        </li>
+      
+    </ul>
+  </div>
+
+  
+    <div class="no-autodetect hidden">
+      <span class="no-autodetect-details">We weren't able to detect your OS.</span>
+    </div>
+    <noscript>
+      <a href="/nu_plugin_net/artifacts/">View all installation options</a>
+    </noscript>
+  
+  <div class="mac-switch hidden">This project doesn't offer Apple Silicon downloads, but you can run Intel macOS binaries via Rosetta 2.</div>
+
+  
+  
+  <div class="bottom-options ">
+    <a href="/nu_plugin_net/artifacts/" class="backup-download primary">View all installation options</a>
+    
+      <div class="arch-select hidden">
+        <select id="install-arch-select">
+          <option disabled="true" selected="true" value=""></option>
+          
+            <option value="x86_64-unknown-linux-gnu">Linux x64</option>
+          
+            <option value="aarch64-apple-darwin">macOS Apple Silicon</option>
+          
+            <option value="x86_64-apple-darwin">macOS Intel</option>
+          
+            <option value="x86_64-pc-windows-msvc">Windows x64</option>
+          
+        </select>
+      </div>
+    
+  </div>
+</div>
+
+<a href="/nu_plugin_net/artifacts/" class="button mobile-download primary">View all installation options</a>
+
+
+    <h1>nu_plugin_net</h1>
+<p>A nushell plugin to list system network interfaces</p>
+<p>A simple and straightforward plugin. All of the heavy lifting is done by pnet. This package just translates the datatypes into a nu-acceptable format.</p>
+<p>Format may be subject to change.</p>
+<blockquote>
+<p>[!note]
+Version 2.0 Is in the Works</p>
+</blockquote>
+<p>Version 2 of this plugin is actively being prepared. Some important objectives:</p>
+<ul>
+<li>Automate the nushell version update process</li>
+<li>Setup a website, more clear installation instructions</li>
+<li>Add support for additional commands
+<ul>
+<li><code>ping</code></li>
+<li>Some form of tcp SYN port-scanning</li>
+<li>Speed testing (50-50 about this one, please comment thoughts)</li>
+<li>ARP ping, listening</li>
+<li>Interface for viewing routing tables</li>
+<li>traceroute (This might be too difficult, we'll see)</li>
+</ul>
+</li>
+</ul>
+<p>If you've got thoughts about the direction we should take, or are interested in helping out, please get in touch! Feel free to file an issue, or just send me an email directly.</p>
+<h1>Examples</h1>
+<pre style="background-color:#263238;"><span style="color:#eeffff;">~&gt; net
+</span><span style="color:#eeffff;">╭───┬──────┬─────────────┬──────────┬───────────────────┬──────────────────────────────────────────────────┬────────────────────────────────╮
+</span><span style="color:#eeffff;">│ # │ name │ description │ if_index │        mac        │                       ips                        │             flags              │
+</span><span style="color:#eeffff;">├───┼──────┼─────────────┼──────────┼───────────────────┼──────────────────────────────────────────────────┼────────────────────────────────┤
+</span><span style="color:#eeffff;">│ 0 │ lo   │             │        1 │ 00:00:00:00:00:00 │ ╭───┬───────────┬──────┬────────╮                │ ╭────────────────────┬───────╮ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ # │   addr    │ type │ prefix │                │ │ is_up              │ true  │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ├───┼───────────┼──────┼────────┤                │ │ is_broadcast       │ false │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 0 │ 127.0.0.1 │ v4   │      8 │                │ │ is_loopback        │ true  │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 1 │ ::1       │ v6   │    128 │                │ │ is_point_to_point  │ false │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ╰───┴───────────┴──────┴────────╯                │ │ is_multicast       │ false │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │                                                  │ ╰────────────────────┴───────╯ │
+</span><span style="color:#eeffff;">│ 1 │ ens5 │             │        2 │ 0e:ec:4c:2a:2e:43 │ ╭───┬──────────────────────────┬──────┬────────╮ │ ╭────────────────────┬───────╮ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ # │           addr           │ type │ prefix │ │ │ is_up              │ true  │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ├───┼──────────────────────────┼──────┼────────┤ │ │ is_broadcast       │ true  │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 0 │ 172.23.65.24             │ v4   │     24 │ │ │ is_loopback        │ false │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 1 │ fe80::cec:4cff:fe2a:2e43 │ v6   │     64 │ │ │ is_point_to_point  │ false │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ╰───┴──────────────────────────┴──────┴────────╯ │ │ is_multicast       │ true  │ │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │                                                  │ ╰────────────────────┴───────╯ │
+</span><span style="color:#eeffff;">╰───┴──────┴─────────────┴──────────┴───────────────────┴──────────────────────────────────────────────────┴────────────────────────────────╯
+</span></pre>
+
+<pre style="background-color:#263238;"><span style="color:#eeffff;">~&gt; net | flatten flags
+</span><span style="color:#eeffff;">╭───┬──────┬─────────────┬──────────┬───────────────────┬──────────────────────────────────────────────────┬───────┬──────────────┬─────────────┬───────────────────┬──────────────╮
+</span><span style="color:#eeffff;">│ # │ name │ description │ if_index │        mac        │                       ips                        │ is_up │ is_broadcast │ is_loopback │ is_point_to_point │ is_multicast │
+</span><span style="color:#eeffff;">├───┼──────┼─────────────┼──────────┼───────────────────┼──────────────────────────────────────────────────┼───────┼──────────────┼─────────────┼───────────────────┼──────────────┤
+</span><span style="color:#eeffff;">│ 0 │ lo   │             │        1 │ 00:00:00:00:00:00 │ ╭───┬───────────┬──────┬────────╮                │ true  │ false        │ true        │ false             │ false        │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ # │   addr    │ type │ prefix │                │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ├───┼───────────┼──────┼────────┤                │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 0 │ 127.0.0.1 │ v4   │      8 │                │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 1 │ ::1       │ v6   │    128 │                │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ╰───┴───────────┴──────┴────────╯                │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│ 1 │ ens5 │             │        2 │ 0e:ec:4c:2a:2e:43 │ ╭───┬──────────────────────────┬──────┬────────╮ │ true  │ true         │ false       │ false             │ true         │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ # │           addr           │ type │ prefix │ │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ├───┼──────────────────────────┼──────┼────────┤ │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 0 │ 172.23.65.24             │ v4   │     24 │ │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ │ 1 │ fe80::cec:4cff:fe2a:2e43 │ v6   │     64 │ │       │              │             │                   │              │
+</span><span style="color:#eeffff;">│   │      │             │          │                   │ ╰───┴──────────────────────────┴──────┴────────╯ │       │              │             │                   │              │
+</span><span style="color:#eeffff;">╰───┴──────┴─────────────┴──────────┴───────────────────┴──────────────────────────────────────────────────┴───────┴──────────────┴─────────────┴───────────────────┴──────────────╯
+</span></pre>
+
+<h1>Installing</h1>
+<p>This plugin can either be installed from crates.io, or built from source.</p>
+<p>To install using cargo, run:</p>
+<pre style="background-color:#263238;"><span style="color:#eeffff;">cargo install nu_plugin_net
+</span></pre>
+
+<p>To build from source, use:</p>
+<pre style="background-color:#263238;"><span style="color:#eeffff;">git clone https://github.com/fennewald/nu_plugin_net.git
+</span><span style="color:#eeffff;">cd nu_plugin_net
+</span><span style="color:#eeffff;">cargo install --path .
+</span></pre>
+
+<p>Both of these processes will place a binary in <code>~/.cargo/bin/nu_plugin_net</code>
+To register the plugin for use, just run:</p>
+<pre style="background-color:#263238;"><span style="color:#eeffff;">plugin add ~/.cargo/bin/nu_plugin_net
+</span></pre>
+
+<h1>Changelog</h1>
+<h2>Version 1.9.0</h2>
+<ul>
+<li>(@MakeShiftArtist) Update to Nushell 0.103.0</li>
+</ul>
+<h2>Version 1.8.0</h2>
+<ul>
+<li>(@kpbaks) Update to Nushell 0.98.0</li>
+</ul>
+<h2>Version 1.7.0</h2>
+<ul>
+<li>Update to Nushell 0.97.1</li>
+<li>Reorganized the code, preparing for a full rewrite.</li>
+</ul>
+<h2>Version 1.6.0</h2>
+<ul>
+<li>Update for Nushell 0.96.0</li>
+</ul>
+<h2>Version 1.5.0</h2>
+<ul>
+<li>Update for Nushell 0.94.2</li>
+</ul>
+<p>Maintainer note: Sorry for the inconsitencies. From now on, nushell version updates will include minor version bumps</p>
+<h2>Version 1.4.1</h2>
+<ul>
+<li>(@baerlkr) Update for Nushell 0.93</li>
+</ul>
+<h2>Version 1.4.0</h2>
+<ul>
+<li>(@oraoto) Update for Nushell 0.92</li>
+</ul>
+<h2>Version 1.3.0</h2>
+<ul>
+<li>(@FMotalleb) Bump dependency versions</li>
+<li>(@FMotalleb) Refactor: replaced structs with standard constructors</li>
+</ul>
+<h2>Version 1.2.0</h2>
+<ul>
+<li>Update for Nushell 0.84</li>
+</ul>
+<h2>Version 1.1.0</h2>
+<ul>
+<li>Use <code>if_index</code> instead of <code>index</code>, fixing the way table indexes are displayed</li>
+</ul>
+
+
+
+        </main>
+      </div>
+
+      <footer>
+        
+          <a href="https://github.com/fennewald/nu_plugin_net"><div class="github-icon" aria-hidden="true"></div></a>
+        
+        <span>
+          nu_plugin_net, MIT
+        </span>
+      </footer>
+    </div>
+
+    
+    
+
+    
+
+    <script src="/nu_plugin_net/artifacts.js"></script>
+
+
+  </body>
+</html>

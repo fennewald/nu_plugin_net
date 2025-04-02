@@ -6,7 +6,7 @@ keywords = ["nushell", "network", "plugin"]
 homepage = "https://github.com/fennewald/nu_plugin_net"
 repository = "https://github.com/fennewald/nu_plugin_net"
 description = "A nushell plugin for enumerating network interfaces in a platform-agnostic way"
-version = "1.8.0"
+version = "2.0.0"
 edition = "2021"
 readme = "README.md"
 
@@ -19,6 +19,7 @@ name = "nu_plugin_net"
 nu-plugin = "0.102"
 nu-protocol = { version = "0.102", features = ["plugin"] }
 pnet = "0.35.0"
+tokio = { version = "1.44.1", features = ["full"] }
 
 # The profile that 'cargo dist' will build with
 [profile.dist]

@@ -1,10 +1,14 @@
-use crate::InterfacesCommand;
+use crate::{InterfacesCommand, PingCommand};
 
-pub struct Plugin;
+pub struct Plugin {
+    rt: tokio::runtime::Runtime,
+}
 
 impl Plugin {
     pub fn new() -> Plugin {
-        Plugin {}
+        Plugin {
+            rt: tokio::runtime::Runtime::new().unwrap(),
+        }
     }
 }
 
@@ -14,6 +18,6 @@ impl nu_plugin::Plugin for Plugin {
     }
 
     fn commands(&self) -> Vec<Box<dyn nu_plugin::PluginCommand<Plugin = Self>>> {
-        vec![Box::new(InterfacesCommand)]
+        vec![Box::new(InterfacesCommand), Box::new(PingCommand)]
     }
 }

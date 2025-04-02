@@ -72,7 +72,7 @@ impl SimplePluginCommand for InterfacesCommand {
     type Plugin = crate::Plugin;
 
     fn name(&self) -> &str {
-        "net"
+        "net ifs"
     }
 
     fn description(&self) -> &str {

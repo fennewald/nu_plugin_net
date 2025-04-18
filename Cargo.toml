@@ -16,10 +16,12 @@ name = "nu_plugin_net"
 [lib]
 
 [dependencies]
+libc = "0.2.171"
 nu-plugin = "0.102"
 nu-protocol = { version = "0.102", features = ["plugin"] }
 pnet = "0.35.0"
 tokio = { version = "1.44.1", features = ["full"] }
+zerocopy = { version = "0.8.24", features = ["std", "simd-nightly", "derive"] }
 
 # The profile that 'cargo dist' will build with
 [profile.dist]

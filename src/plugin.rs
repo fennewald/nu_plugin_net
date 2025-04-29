@@ -1,7 +1,7 @@
-use crate::{InterfacesCommand, PingCommand};
+use crate::{CatCommand, PingCommand};
 
 pub struct Plugin {
-    rt: tokio::runtime::Runtime,
+    pub(crate) rt: tokio::runtime::Runtime,
 }
 
 impl Plugin {
@@ -18,6 +18,6 @@ impl nu_plugin::Plugin for Plugin {
     }
 
     fn commands(&self) -> Vec<Box<dyn nu_plugin::PluginCommand<Plugin = Self>>> {
-        vec![Box::new(InterfacesCommand), Box::new(PingCommand)]
+        vec![Box::new(PingCommand), Box::new(CatCommand)]
     }
 }

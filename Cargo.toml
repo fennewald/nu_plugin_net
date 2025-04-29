@@ -16,35 +16,9 @@ name = "nu_plugin_net"
 [lib]
 
 [dependencies]
+crossbeam-channel = "0.5.15"
 libc = "0.2.171"
-nu-plugin = "0.102"
-nu-protocol = { version = "0.102", features = ["plugin"] }
-pnet = "0.35.0"
+nu-plugin = "0.103"
+nu-protocol = { version = "0.103", features = ["plugin"] }
 tokio = { version = "1.44.1", features = ["full"] }
 zerocopy = { version = "0.8.24", features = ["std", "simd-nightly", "derive"] }
-
-# The profile that 'cargo dist' will build with
-[profile.dist]
-inherits = "release"
-lto = "thin"
-
-# Config for 'cargo dist'
-[workspace.metadata.dist]
-# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.19.1"
-# CI backends to support
-ci = "github"
-# The installers to generate for each app
-installers = ["shell"]
-# Target platforms to build apps for (Rust target-triple syntax)
-targets = [
-  "aarch64-apple-darwin",
-  "x86_64-apple-darwin",
-  "x86_64-unknown-linux-gnu",
-]
-# Path that installers should place binaries in
-install-path = "CARGO_HOME"
-# Publish jobs to run in CI
-pr-run-mode = "plan"
-# Whether to install an updater program
-install-updater = false

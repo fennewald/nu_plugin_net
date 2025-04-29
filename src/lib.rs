@@ -1,10 +1,10 @@
 #![feature(new_zeroed_alloc)]
 
-mod inf;
-pub use inf::InterfacesCommand;
-
 mod ping;
 pub use ping::PingCommand;
+
+mod cat;
+pub use cat::CatCommand;
 
 mod plugin;
 pub use plugin::Plugin;
@@ -14,5 +14,3 @@ pub use plugin::Plugin;
 // netcat
 // route
 // interface statistics
-
-pub mod netlink;

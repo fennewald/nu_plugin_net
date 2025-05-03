@@ -89,6 +89,10 @@ plugin add ~/.cargo/bin/nu_plugin_net
 
 # Changelog
 
+## Version 1.10.0
+
+* Update to nushell 0.104.0
+
 ## Version 1.9.0
 
 * (@MakeShiftArtist) Update to Nushell 0.103.0

@@ -10,34 +10,11 @@ version = "1.10.0"
 edition = "2021"
 readme = "README.md"
 
-[[bin]]
-name = "nu_plugin_net"
-
-[lib]
 
 [dependencies]
+futures = { version = "0.3.31", default-features = false, features = ["alloc", "async-await", "std"] }
+log = "0.4.27"
+nix = { version = "0.30.1", features = ["fs", "poll", "signal"] }
 nu-plugin = "0.104.0"
 nu-protocol = { version = "0.104.0", features = ["plugin"] }
-pnet = "0.35.0"
-
-# The profile that 'cargo dist' will build with
-[profile.dist]
-inherits = "release"
-lto = "thin"
-
-# Config for 'dist'
-[workspace.metadata.dist]
-# The preferred dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.28.0"
-# CI backends to support
-ci = "github"
-# The installers to generate for each app
-installers = ["shell"]
-# Target platforms to build apps for (Rust target-triple syntax)
-targets = ["aarch64-apple-darwin", "x86_64-apple-darwin", "x86_64-unknown-linux-gnu"]
-# Path that installers should place binaries in
-install-path = "CARGO_HOME"
-# Which actions to run on pull requests
-pr-run-mode = "plan"
-# Whether to install an updater program
-install-updater = false
+pretty_env_logger = "0.5.0"

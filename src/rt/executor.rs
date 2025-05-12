@@ -6,7 +6,7 @@ use std::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
-use crate::rt::TaskRef;
+use super::TaskRef;
 
 thread_local! {
     static READY_QUEUE: &'static RefCell<VecDeque<TaskRef>> = make_queue();
@@ -60,7 +60,7 @@ pub fn run() -> io::Result<()> {
 
 /// Step the global executor forwards once
 fn step() -> ControlFlow<io::Result<()>> {
-    super::reactor::enqueue_elapsed();
+    super::reactor::wake_elapsed();
 
     if let Some(task) = next_task() {
         log::trace!("polling task {:?}", task);

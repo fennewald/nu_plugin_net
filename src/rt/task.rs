@@ -9,13 +9,14 @@ use std::{
 
 use super::JoinHandle;
 
+/// Spawn a future onto the runtime
 pub fn spawn<T: 'static>(f: impl Future<Output = T> + 'static) -> JoinHandle<T> {
     let (handle, fut) = JoinHandle::wrap(f);
     crate::rt::executor::ready(TaskRef::new(fut));
     handle
 }
 
-pub enum TaskResult<T> {
+pub(super) enum TaskResult<T> {
     /// The task is not yet complete, and no one is `await`ing it
     Unawaited,
     /// The task is actively being `await`ed
@@ -25,18 +26,18 @@ pub enum TaskResult<T> {
     Taken,
 }
 
-pub struct Task {
+struct Task {
     future: Pin<Box<dyn Future<Output = ()>>>,
 }
 
 impl Task {
-    pub fn new(f: impl Future<Output = ()> + 'static) -> Self {
+    fn new(f: impl Future<Output = ()> + 'static) -> Self {
         Task {
             future: Box::pin(f),
         }
     }
 
-    pub fn poll(&mut self, cx: &mut Context<'_>) -> Poll<()> {
+    fn poll(&mut self, cx: &mut Context<'_>) -> Poll<()> {
         self.future.as_mut().poll(cx)
     }
 }
@@ -81,7 +82,7 @@ type TaskRefPtr = *const RefCell<Task>;
 impl TaskRef {}
 
 #[derive(Clone)]
-pub struct TaskRef {
+pub(super) struct TaskRef {
     inner: Rc<RefCell<Task>>,
 }
 
@@ -100,7 +101,7 @@ impl fmt::Debug for TaskRef {
 }
 
 impl TaskRef {
-    pub fn new(f: impl Future<Output = ()> + 'static) -> Self {
+    pub(super) fn new(f: impl Future<Output = ()> + 'static) -> Self {
         Task::new(f).into()
     }
 
@@ -118,11 +119,11 @@ impl TaskRef {
         unsafe { LocalWaker::new(self.into_raw() as _, &local_waker::VTABLE) }
     }
 
-    pub fn enqueue(self) {
-        crate::rt::executor::ready(self);
+    pub(super) fn enqueue(self) {
+        super::executor::ready(self);
     }
 
-    pub fn poll(&self) -> Poll<()> {
+    pub(super) fn poll(&self) -> Poll<()> {
         let waker = self.clone().into_waker();
         let mut cx = ContextBuilder::from_waker(Waker::noop())
             .local_waker(&waker)

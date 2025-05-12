@@ -37,18 +37,12 @@ impl Future for CounterFuture {
     }
 }
 
-async fn waow() -> usize {
-    let counter = CounterFuture::new(10);
-    counter.await;
-    2
-}
-
 fn main() {
     pretty_env_logger::formatted_builder()
         .filter_level(log::LevelFilter::Trace)
         .init();
 
-    rt::task::spawn(async {
+    rt::spawn(async {
         let mut stdin = io::stdin::open().expect("failed to open stdin");
         loop {
             let mut buffer = [0; 4096];
@@ -67,15 +61,15 @@ fn main() {
         }
     });
 
-    rt::task::spawn(async {
+    rt::spawn(async {
         for i in 0..10 {
-            rt::Timer::new(Duration::from_secs(1)).await;
+            rt::time::sleep(Duration::from_secs(1)).await;
             log::info!("cycle {}", i);
         }
     });
 
     log::info!("starting");
 
-    let res = rt::executor::run();
+    let res = rt::run();
     log::info!("executor exited with {:?}", res);
 }

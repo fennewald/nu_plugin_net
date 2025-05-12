@@ -84,7 +84,8 @@ impl<T: 'static> JoinHandle<T> {
         let res = handle.0.clone();
 
         (handle, async move {
-            res.borrow_mut().complete(fut.await);
+            fut.await;
+            // res.borrow_mut().complete(fut.await);
         })
     }
 }

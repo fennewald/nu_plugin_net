@@ -1,12 +1,21 @@
 #![feature(local_waker)]
 #![feature(thread_sleep_until)]
+#![feature(type_alias_impl_trait)]
 
 use std::time::Duration;
 
-use futures::{AsyncReadExt, StreamExt};
+mod net;
 
 pub mod io;
+pub mod plugin;
 pub mod rt;
+
+pub mod channel;
+
+async fn entry() -> anyhow::Result<()> {
+    rt::time::sleep(Duration::from_secs(2)).await;
+    plugin::entry::serve_cli(net::Net).await
+}
 
 fn main() {
     pretty_env_logger::formatted_builder()
@@ -14,33 +23,9 @@ fn main() {
         .init();
 
     rt::spawn(async {
-        let mut stdin = io::stdin::open().expect("failed to open stdin");
-        loop {
-            let mut buffer = [0; 16];
-            let len = stdin
-                .read(&mut buffer)
-                .await
-                .expect("could not read from stdin");
-            log::info!("read in {} bytes", len);
-            let s = std::str::from_utf8(&buffer[0..len])
-                .expect("invalid UTF-8")
-                .trim();
-            log::info!("<{s}");
-            if s == "quit" {
-                break;
-            }
-        }
+        let res = entry().await;
+        log::info!("plugin exited with {:#?}", res);
     });
-
-    rt::spawn(async {
-        rt::time::interval(Duration::from_secs(1))
-            .take(10)
-            .enumerate()
-            .for_each(|(i, _)| async move { log::info!("cycle {i}") })
-            .await
-    });
-
-    log::info!("starting");
 
     let res = rt::run();
     log::info!("executor exited with {:?}", res);

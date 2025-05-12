@@ -8,7 +8,7 @@ use std::{
     time::Instant,
 };
 
-use futures::AsyncRead;
+use futures::{AsyncRead, AsyncWrite};
 use nix::poll::{ppoll, PollFd, PollFlags};
 
 fn with_driver<F, O>(f: F) -> O
@@ -63,11 +63,55 @@ where
             .is_err_and(|e| e.kind() == ErrorKind::WouldBlock)
         {
             // Read isn't ready yet
-            with_driver(|driver| driver.register_read(this.as_raw_fd(), cx.local_waker()));
+            with_driver(|d| d.register_read(this.as_raw_fd(), cx.local_waker()));
             Poll::Pending
         } else {
             Poll::Ready(res)
         }
+    }
+}
+
+impl<T> AsyncWrite for EventedSource<T>
+where
+    T: AsFd + io::Write + Unpin,
+{
+    fn poll_write(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
+        let this = self.get_mut();
+        let res = this.src.write(buf);
+        if res
+            .as_ref()
+            .is_err_and(|e| e.kind() == ErrorKind::WouldBlock)
+        {
+            with_driver(|d| d.register_write(this.as_raw_fd(), cx.local_waker()));
+            Poll::Pending
+        } else {
+            Poll::Ready(res)
+        }
+    }
+
+    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        let this = self.get_mut();
+
+        let res = this.src.flush();
+
+        if res
+            .as_ref()
+            .is_err_and(|e| e.kind() == ErrorKind::WouldBlock)
+        {
+            with_driver(|d| d.register_write(this.as_raw_fd(), cx.local_waker()));
+            Poll::Pending
+        } else {
+            Poll::Ready(res)
+        }
+    }
+
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        let _ = cx;
+        todo!()
     }
 }
 
@@ -167,6 +211,30 @@ impl IoDriver {
         }
 
         Ok(woken)
+    }
+
+    fn register_write(&mut self, fd: RawFd, waker: &LocalWaker) {
+        let interest = PollFlags::POLLOUT | PollFlags::POLLERR;
+        match self.tasks.entry(fd) {
+            Entry::Occupied(mut entry) => {
+                log::debug!("IO entry event updated");
+                let entry = entry.get_mut();
+                entry.interest |= interest;
+                if let Some(old) = entry.write_waker.as_mut() {
+                    old.clone_from(waker);
+                } else {
+                    entry.write_waker = Some(waker.clone());
+                }
+            }
+            Entry::Vacant(slot) => {
+                log::debug!("new IO entry created");
+                slot.insert(Reg {
+                    interest,
+                    read_waker: None,
+                    write_waker: Some(waker.clone()),
+                });
+            }
+        }
     }
 
     fn register_read(&mut self, fd: RawFd, waker: &LocalWaker) {

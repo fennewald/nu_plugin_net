@@ -43,11 +43,6 @@ pub(super) fn ready(fut: TaskRef) {
     ready_queue().push_back(fut);
 }
 
-/// Mark a task as ready _urgently_, which moves the task to the front of the list to be processed
-pub(super) fn ready_urgent(fut: TaskRef) {
-    ready_queue().push_front(fut);
-}
-
 /// Advance the global executor
 pub fn run() -> io::Result<()> {
     loop {

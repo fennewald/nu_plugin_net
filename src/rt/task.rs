@@ -16,16 +16,6 @@ pub fn spawn<T: 'static>(f: impl Future<Output = T> + 'static) -> JoinHandle<T> 
     handle
 }
 
-pub(super) enum TaskResult<T> {
-    /// The task is not yet complete, and no one is `await`ing it
-    Unawaited,
-    /// The task is actively being `await`ed
-    Awaited(LocalWaker),
-    /// The task is complete. Here is it's result
-    Complete(T),
-    Taken,
-}
-
 struct Task {
     future: Pin<Box<dyn Future<Output = ()>>>,
 }
@@ -42,6 +32,7 @@ impl Task {
     }
 }
 
+// TODO: create non-local waker for compat, and try out a custom WeakWaker that just gets cloned if need-be
 mod local_waker {
     use std::{
         rc::Rc,

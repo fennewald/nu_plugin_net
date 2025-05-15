@@ -44,8 +44,8 @@ pub async fn serve_cli(plugin: impl Plugin) -> anyhow::Result<()> {
 pub async fn serve(plugin: impl Plugin, mode: CommunicationMode) -> anyhow::Result<()> {
     match mode {
         CommunicationMode::Stdio => {
-            let rx = crate::io::stdin()?;
-            let tx = crate::io::stdout()?;
+            let rx = crate::rt::io::stdin()?;
+            let tx = crate::rt::io::stdout()?;
 
             let mut manager = super::manager::open::<io::Json, _, _, _>(plugin, tx, rx).await?;
             manager.run().await

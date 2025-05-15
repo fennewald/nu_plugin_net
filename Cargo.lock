@@ -1018,6 +1018,7 @@ dependencies = [
  "nu-protocol",
  "pretty_env_logger",
  "serde_json",
+ "thiserror 2.0.12",
 ]
 
 [[package]]

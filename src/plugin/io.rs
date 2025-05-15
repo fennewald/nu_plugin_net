@@ -45,7 +45,7 @@ pub trait AsyncEncoder: 'static {
         errs: Sender<ShellError>,
     ) -> Sender<PluginOutput> {
         let (tx, mut rx) = crate::channel::with_capacity(128);
-        crate::rt::spawn(async move {
+        crate::rt::spawn("encoder", async move {
             let report_error = |err| {
                 log::error!("{err}");
                 errs.send(err);

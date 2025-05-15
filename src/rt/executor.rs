@@ -1,68 +1,36 @@
-use std::{
-    cell::{RefCell, RefMut},
-    collections::VecDeque,
-    io,
-    ops::ControlFlow,
-    sync::atomic::{AtomicBool, Ordering},
-};
+use std::{ops::ControlFlow, task::Poll};
 
-use super::TaskRef;
+use super::reactor;
 
-thread_local! {
-    static READY_QUEUE: &'static RefCell<VecDeque<TaskRef>> = make_queue();
-}
-
-/// Returns the threads ready queue. Panics if called from the non-executor thread
-fn ready_queue_cell() -> &'static RefCell<VecDeque<TaskRef>> {
-    READY_QUEUE.with(|v| *v)
-}
-
-/// Short-hand for a mutable ref to the ready queeu
-fn ready_queue() -> RefMut<'static, VecDeque<TaskRef>> {
-    ready_queue_cell().borrow_mut()
-}
-
-fn next_task() -> Option<TaskRef> {
-    ready_queue().pop_front()
-}
-
-/// Returns a new leaked task queue
-/// `panic`s if the function is called twice
-fn make_queue() -> &'static RefCell<VecDeque<TaskRef>> {
-    static INIT: AtomicBool = AtomicBool::new(false);
-
-    if !INIT.fetch_or(true, Ordering::Relaxed) {
-        Box::leak(Box::new(RefCell::new(VecDeque::new())))
-    } else {
-        panic!("Tried to re-initalize already initalized runtime");
-    }
-}
-
-/// Signal to the executor that the provided task is ready for processing
-pub(super) fn ready(fut: TaskRef) {
-    ready_queue().push_back(fut);
-}
-
-/// Advance the global executor
-pub fn run() -> io::Result<()> {
+pub(crate) fn run() -> std::io::Result<()> {
     loop {
-        match step() {
-            ControlFlow::Continue(()) => {}
-            ControlFlow::Break(v) => return v,
+        if let ControlFlow::Break(res) = step() {
+            return res;
         }
     }
 }
 
-/// Step the global executor forwards once
-fn step() -> ControlFlow<io::Result<()>> {
-    super::reactor::wake_elapsed();
+fn step() -> ControlFlow<std::io::Result<()>> {
+    reactor::wake_elapsed();
 
-    if let Some(task) = next_task() {
-        log::trace!("polling task {:?}", task);
-        let res = task.poll();
-        log::trace!("poll task {:?}: {:?}", task, res);
+    if let Some(task) = super::queue::pop_task() {
+        if task.is_cancelled() {
+            log::debug!("Noticed task {:?} is cancelled. Removing it!", task);
+            task.cancel();
+        } else {
+            match task.poll() {
+                Ok(Poll::Ready(())) => log::trace!("task completed"),
+                Ok(Poll::Pending) => {}
+                Err(e) => {
+                    log::error!("Failed to poll task");
+                    log::error!("{e}");
+                }
+            }
+        }
+
         ControlFlow::Continue(())
     } else {
-        super::reactor::block()
+        // No tasks are ready, go to the reactor
+        reactor::block()
     }
 }

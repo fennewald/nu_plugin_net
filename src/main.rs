@@ -1,4 +1,5 @@
 #![feature(local_waker)]
+#![feature(box_vec_non_null)]
 #![feature(thread_sleep_until)]
 #![feature(type_alias_impl_trait)]
 
@@ -6,14 +7,12 @@ use std::time::Duration;
 
 mod net;
 
-pub mod io;
 pub mod plugin;
 pub mod rt;
 
 pub mod channel;
 
 async fn entry() -> anyhow::Result<()> {
-    rt::time::sleep(Duration::from_secs(2)).await;
     plugin::entry::serve_cli(net::Net).await
 }
 
@@ -22,7 +21,7 @@ fn main() {
         .filter_level(log::LevelFilter::Trace)
         .init();
 
-    rt::spawn(async {
+    rt::spawn("main", async {
         let res = entry().await;
         log::info!("plugin exited with {:#?}", res);
     });

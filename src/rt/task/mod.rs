@@ -36,7 +36,7 @@
 //! much easier to work with, and will likely compile to the same code.
 
 mod meta;
-pub(crate) use meta::Metadata;
+pub use meta::Metadata;
 
 mod state;
 use state::State;
@@ -56,7 +56,7 @@ use core::{Header, Slot};
 use std::future::Future;
 
 mod join_handle;
-pub(crate) use join_handle::{JoinError, JoinHandle, JoinResult};
+pub use join_handle::{JoinError, JoinHandle, JoinResult};
 
 /// Allocates a new task
 pub(super) fn alloc<F: Future>(name: &'static str, future: F) -> (JoinHandle<F::Output>, RawTask) {

@@ -8,10 +8,10 @@ use std::{
 
 use super::{Metadata, RawTask};
 
-pub(crate) type JoinResult<T> = std::result::Result<T, JoinError>;
+pub type JoinResult<T> = std::result::Result<T, JoinError>;
 
 #[derive(Debug, thiserror::Error)]
-pub(crate) struct JoinError {
+pub struct JoinError {
     meta: Metadata,
     reason: Reason,
 }
@@ -45,7 +45,7 @@ enum Reason {
     Consumed,
 }
 
-pub(crate) struct JoinHandle<T> {
+pub struct JoinHandle<T> {
     task: RawTask,
     _tag: PhantomData<T>,
 }
@@ -59,24 +59,24 @@ impl<T> JoinHandle<T> {
     }
 
     /// Abort the task associated with this handle
-    pub(crate) fn cancel(&self) {
+    pub fn cancel(&self) {
         self.task.request_cancel();
     }
 
     /// Tests if the task has finished
-    pub(crate) const fn is_finished(&self) -> bool {
+    pub const fn is_finished(&self) -> bool {
         self.task.state().is_complete()
     }
 
-    pub(crate) const fn meta(&self) -> &Metadata {
+    pub const fn meta(&self) -> &Metadata {
         self.task.meta()
     }
 
-    pub(crate) const fn name(&self) -> &'static str {
+    pub const fn name(&self) -> &'static str {
         self.meta().name()
     }
 
-    pub(crate) const fn id(&self) -> u64 {
+    pub const fn id(&self) -> u64 {
         self.meta().id()
     }
 }

@@ -3,12 +3,9 @@ use std::{
     ffi::{OsStr, OsString},
 };
 
-use anyhow::Context;
 use nu_plugin_core::CommunicationMode;
 
 use super::{io, Plugin};
-
-// TODO: remove anyhow
 
 pub async fn serve_cli(plugin: impl Plugin) -> anyhow::Result<()> {
     let args: Vec<OsString> = env::args_os().skip(1).collect();
@@ -50,7 +47,7 @@ pub async fn serve(plugin: impl Plugin, mode: CommunicationMode) -> anyhow::Resu
             let mut manager = super::manager::open::<io::Json, _, _, _>(plugin, tx, rx).await?;
             manager.run().await
         }
-        CommunicationMode::LocalSocket(name) => {
+        CommunicationMode::LocalSocket(_) => {
             todo!()
             // use crate::rt::io::EventedSource;
             // use interprocess::local_socket as ls;

@@ -1,9 +1,9 @@
+// TODO: remove
+#![allow(dead_code)]
 #![feature(local_waker)]
 #![feature(box_vec_non_null)]
 #![feature(thread_sleep_until)]
 #![feature(type_alias_impl_trait)]
-
-use std::time::Duration;
 
 mod net;
 

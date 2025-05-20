@@ -2,7 +2,7 @@ use std::{fmt, sync::atomic::AtomicU64};
 
 /// Task metadata, used for identifying tasks
 #[derive(Debug, Copy, Clone)]
-pub(crate) struct Metadata {
+pub struct Metadata {
     /// A _globally unique_ per-task ID
     id: u64,
     /// A human-readable name, for help
@@ -23,11 +23,11 @@ impl Metadata {
         Self { id, name }
     }
 
-    pub(crate) const fn id(&self) -> u64 {
+    pub const fn id(&self) -> u64 {
         self.id
     }
 
-    pub(crate) const fn name(&self) -> &'static str {
+    pub const fn name(&self) -> &'static str {
         self.name
     }
 }

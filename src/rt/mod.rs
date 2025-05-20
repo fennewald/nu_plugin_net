@@ -34,14 +34,14 @@
 //! The `task` module is a single-threaded implementation of a tokio-like system. See the docs
 //! therein for more details.
 
-pub mod task;
+mod task;
 pub(crate) use task::JoinHandle;
 
 mod executor;
 pub(crate) use executor::run;
 
 mod queue;
-use queue::{schedule, try_schedule};
+use queue::schedule;
 
 mod spawn;
 pub(crate) use spawn::spawn;

@@ -48,10 +48,12 @@ pub trait AsyncEncoder: 'static {
         crate::rt::spawn("encoder", async move {
             let report_error = |err| {
                 log::error!("{err}");
-                errs.send(err);
+                if let Err(e) = errs.send(err) {
+                    log::error!("failed to send error to engine: {e}");
+                }
             };
 
-            while let Some(it) = rx.recv().await {
+            while let Ok(it) = rx.recv().await {
                 if let Err(e) = write_msg::<Self, _>(&mut w, it).await {
                     report_error(e);
                 }

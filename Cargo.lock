@@ -1016,6 +1016,7 @@ dependencies = [
  "nu-plugin-core",
  "nu-plugin-protocol",
  "nu-protocol",
+ "pin-project-lite",
  "pretty_env_logger",
  "serde_json",
  "thiserror 2.0.12",

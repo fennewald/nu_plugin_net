@@ -1,7 +1,11 @@
 use nu_plugin_protocol::{CallInfo, PipelineDataHeader, PluginOutput};
 use nu_protocol::{ShellError, Signature};
 
-pub type ShellResult<T> = Result<T, ShellError>;
+pub type Result<T> = std::result::Result<T, ShellError>;
+
+pub type ShellResult<T> = std::result::Result<T, ShellError>;
+
+mod stream;
 
 pub mod producer;
 

@@ -1,5 +1,4 @@
 // TODO: remove
-#![allow(dead_code)]
 #![feature(local_waker)]
 #![feature(box_vec_non_null)]
 #![feature(thread_sleep_until)]

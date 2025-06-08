@@ -21,10 +21,7 @@ fn step() -> ControlFlow<std::io::Result<()>> {
             match task.poll() {
                 Ok(Poll::Ready(())) => log::trace!("task completed"),
                 Ok(Poll::Pending) => {}
-                Err(e) => {
-                    log::error!("Failed to poll task");
-                    log::error!("{e}");
-                }
+                Err(e) => log::trace!("Failed to poll task: {e}"),
             }
         }
 

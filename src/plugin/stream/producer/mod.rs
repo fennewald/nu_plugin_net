@@ -5,12 +5,13 @@ mod adapter;
 use adapter::{Adapter, GenericAdapter};
 
 mod state;
-use state::StateRef;
+use state::{State, StateRef};
 
 mod handle;
 pub(in crate::plugin) use handle::ProducerHandle;
 
 mod client;
-use client::{ByteProducer, ListProducer, Producer};
+pub use client::{ByteProducer, ListProducer, Producer};
 
 mod manager;
+pub(in crate::plugin) use manager::ProducerManager;

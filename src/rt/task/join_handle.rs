@@ -3,7 +3,7 @@ use std::{
     future::Future,
     marker::PhantomData,
     pin::Pin,
-    task::{Context, Poll},
+    task::{Context, ContextBuilder, LocalWaker, Poll, Waker},
 };
 
 use super::{Metadata, RawTask};
@@ -55,6 +55,20 @@ impl<T> JoinHandle<T> {
         Self {
             task,
             _tag: PhantomData,
+        }
+    }
+
+    /// Attempts to consume `Self` and return a completed result in a synchronous manner
+    pub fn complete_sync(mut self) -> Result<JoinResult<T>, Self> {
+        // We don't even have to worry about clobbering waker refs w/ these, because by virtue of
+        // being passed into this function, no waker refs are alive.
+        let mut ctx = ContextBuilder::from_waker(Waker::noop())
+            .local_waker(LocalWaker::noop())
+            .build();
+
+        match Pin::new(&mut self).poll(&mut ctx) {
+            Poll::Ready(res) => Ok(res),
+            Poll::Pending => Err(self),
         }
     }
 

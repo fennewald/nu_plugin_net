@@ -44,7 +44,7 @@ mod queue;
 use queue::schedule;
 
 mod spawn;
-pub(crate) use spawn::spawn;
+pub use spawn::spawn;
 
 mod reactor;
 use reactor::with_reactor;
@@ -52,7 +52,7 @@ use reactor::with_reactor;
 mod time_driver;
 use time_driver::TimeDriver;
 
-pub(crate) mod time;
+pub mod time;
 
 mod io_driver;
 use io_driver::IoDriver;

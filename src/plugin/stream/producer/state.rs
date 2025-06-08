@@ -21,11 +21,11 @@ pub(super) struct State {
 pub(super) type StateRef = Rc<RefCell<State>>;
 
 impl State {
-    pub(super) fn new() -> Self {
-        Self {
+    pub(super) fn new() -> StateRef {
+        Rc::new(RefCell::new(Self {
             next_id: 0,
             streams: HashMap::new(),
-        }
+        }))
     }
 
     fn next_id(&mut self) -> StreamId {

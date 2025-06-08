@@ -10,12 +10,12 @@ use futures::Stream;
 use super::time_driver::with_driver;
 
 /// Sleep for the provided duration
-pub(crate) async fn sleep(dur: Duration) {
+pub async fn sleep(dur: Duration) {
     sleep_until(Instant::now() + dur).await
 }
 
 /// Sleep until the provided moment
-pub(crate) async fn sleep_until(deadline: Instant) {
+pub async fn sleep_until(deadline: Instant) {
     TimerFuture { deadline }.await
 }
 
@@ -41,7 +41,7 @@ impl Future for TimerFuture {
 
 /// Returns a `futures::Stream` where each future is spaced by the requested duration
 /// The first item will yield immediately. `skip(1)` if you'd like the first trigger to be delayed
-pub(crate) fn interval(interval: Duration) -> impl Stream<Item = ()> {
+pub fn interval(interval: Duration) -> impl Stream<Item = ()> {
     Interval {
         target: None,
         interval,

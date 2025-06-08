@@ -1,10 +1,7 @@
-use nu_plugin_protocol::{CallInfo, PipelineDataHeader};
-use nu_protocol::{ShellError, Signature};
+use nu_plugin_protocol::CallInfo;
+use nu_protocol::Signature;
 
-use crate::{
-    plugin::{ActualizedPipelineDataHeader, Command},
-    rt::JoinHandle,
-};
+use crate::plugin::{Command, CommandExt, Context, InputDataHeader, Result};
 
 pub struct Net;
 
@@ -15,15 +12,16 @@ impl crate::plugin::Plugin for Net {
         env!("CARGO_PKG_VERSION").to_string()
     }
 
-    fn commands(&self) -> impl Iterator<Item = Box<dyn Command<Plugin = Self>>> {
+    fn commands(&self) -> impl Iterator<Item = Box<dyn CommandExt<Plugin = Self>>> {
         [PingCommand::new()].into_iter()
     }
 }
 
+#[derive(Clone)]
 pub struct PingCommand;
 
 impl PingCommand {
-    fn new() -> Box<dyn Command<Plugin = Net>> {
+    fn new() -> Box<dyn CommandExt<Plugin = Net>> {
         Box::new(PingCommand)
     }
 }
@@ -31,9 +29,7 @@ impl PingCommand {
 impl Command for PingCommand {
     type Plugin = Net;
 
-    fn name(&self) -> &'static str {
-        "net ping"
-    }
+    const NAME: &str = "net ping";
 
     fn description(&self) -> &'static str {
         "Ping description"
@@ -43,10 +39,16 @@ impl Command for PingCommand {
         Signature::new(self.name())
     }
 
-    fn spawn(
-        &self,
-        call_info: CallInfo<ActualizedPipelineDataHeader>,
-    ) -> Result<JoinHandle<Result<(), ShellError>>, ShellError> {
-        todo!()
+    async fn run(
+        self,
+        call: CallInfo<InputDataHeader>,
+        mut ctx: Context<Self::Plugin>,
+    ) -> Result<()> {
+        log::info!("inside task id {}", ctx.id());
+
+        let decl_id = ctx.engine().find_decl(self.name()).await?;
+        log::info!("my decl id: {:?}", decl_id);
+
+        ctx.respond_empty()
     }
 }

@@ -1,3 +1,5 @@
+use nu_plugin_protocol::StreamData;
+
 use crate::plugin::{
     stream::{ByteStreamData, ListStreamData},
     Result,
@@ -41,18 +43,21 @@ impl GenericAdapter {
     }
 }
 
-impl<D> Adapter<D> {
+impl<D> Adapter<D>
+where
+    D: Into<StreamData>,
+{
     pub(super) fn new(core: CoreRef<D>) -> Self {
         Self(core)
     }
 
     /// Handle an ack message
     fn ack(&mut self) -> Result<()> {
-        todo!()
+        self.0.borrow_mut().ack()
     }
 
     /// Handle a drop message
     fn drop(self) -> Result<()> {
-        todo!()
+        self.0.borrow_mut().drop()
     }
 }

@@ -8,10 +8,7 @@ use nu_protocol::ShellError;
 
 use crate::{channel::Sender, plugin::Result};
 
-use super::{
-    Adapter, ByteProducer, Core, GenericAdapter, ListProducer, Producer, ProducerHandle, State,
-    StateRef,
-};
+use super::{Adapter, ByteProducer, Core, GenericAdapter, ListProducer, Producer};
 
 pub(in crate::plugin) struct ProducerManager {
     /// The next id to be used for a stream
@@ -24,6 +21,14 @@ impl ProducerManager {
         Self {
             next_id: 0,
             streams: HashMap::new(),
+        }
+    }
+
+    pub(in crate::plugin) fn cleanup(&mut self, id: StreamId) {
+        if self.streams.remove(&id).is_some() {
+            log::debug!("cleaned up errorneous stream {id}");
+        } else {
+            log::warn!("tried to cleanup invalid stream {id}");
         }
     }
 

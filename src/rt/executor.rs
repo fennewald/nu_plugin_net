@@ -14,6 +14,7 @@ fn step() -> ControlFlow<std::io::Result<()>> {
     reactor::wake_elapsed();
 
     if let Some(task) = super::queue::pop_task() {
+        log::trace!("trying task {:?}", task);
         if task.is_cancelled() {
             log::debug!("Noticed task {:?} is cancelled. Removing it!", task);
             task.cancel();

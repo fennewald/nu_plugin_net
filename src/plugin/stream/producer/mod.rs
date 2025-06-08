@@ -1,14 +1,10 @@
+// TODO: validate behavior if stream is dropped early
+
 mod core;
 use core::{Core, CoreRef};
 
 mod adapter;
 use adapter::{Adapter, GenericAdapter};
-
-mod state;
-use state::{State, StateRef};
-
-mod handle;
-pub(in crate::plugin) use handle::ProducerHandle;
 
 mod client;
 pub use client::{ByteProducer, ListProducer, Producer};

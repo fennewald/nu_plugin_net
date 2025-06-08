@@ -4,7 +4,7 @@ use std::{
     task::{Context, Poll},
 };
 
-use nu_plugin_protocol::StreamData;
+use nu_plugin_protocol::{StreamData, StreamId};
 
 use crate::plugin::{
     stream::{ByteStreamData, ListStreamData},
@@ -15,7 +15,7 @@ use super::CoreRef;
 
 /// The user-side handle to a currently active output pipeline
 #[repr(transparent)]
-pub struct Producer<D>(CoreRef<D>);
+pub struct Producer<D: Into<StreamData>>(CoreRef<D>);
 
 pub type ByteProducer = Producer<ByteStreamData>;
 pub type ListProducer = Producer<ListStreamData>;
@@ -26,6 +26,10 @@ where
 {
     pub(super) fn new(core: CoreRef<D>) -> Self {
         Self(core)
+    }
+
+    pub fn id(&self) -> StreamId {
+        self.0.borrow().id()
     }
 
     /// Sets the maximum number of unacknowledged messages.
@@ -46,6 +50,18 @@ where
     /// Sends data into the pipeline
     pub fn send_buffered(&mut self, data: D) -> Result<()> {
         self.0.borrow_mut().push(data)
+    }
+}
+
+impl<D> Drop for Producer<D>
+where
+    D: Into<StreamData>,
+{
+    fn drop(&mut self) {
+        // TODO: forward error to main plugin
+        if let Err(e) = self.0.borrow_mut().end() {
+            log::error!("failed to end stream: {e}");
+        }
     }
 }
 

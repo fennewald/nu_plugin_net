@@ -1,19 +1,35 @@
-use std::{cell::RefCell, rc::Rc, task::LocalWaker};
+use std::{
+    cell::RefCell,
+    rc::Rc,
+    task::{LocalWaker, Poll},
+};
 
 use nu_plugin_protocol::{CallInfo, PipelineDataHeader, PluginCallId};
-use nu_protocol::{PipelineMetadata, ShellError, Value};
+use nu_protocol::{ByteStreamType, PipelineMetadata, ShellError, Span, Value};
 
 use crate::rt::JoinHandle;
 
 use super::{
-    CommandExt, CoreRef as ManagerCoreRef, EngineInterface, InputDataHeader, Plugin, Result,
+    ByteProducer, CommandExt, CoreRef as ManagerCoreRef, EngineInterface, InputDataHeader,
+    ListProducer, Plugin, Result,
 };
 
+#[derive(Copy, Clone, PartialEq, Eq)]
 enum Status {
     Nominal,
     Cancelled,
     Reset,
     Done,
+}
+
+impl Status {
+    fn running(self) -> bool {
+        self == Status::Nominal
+    }
+
+    fn stopped(self) -> bool {
+        !self.running()
+    }
 }
 
 struct Core {
@@ -82,6 +98,24 @@ impl<P: Plugin> Context<P> {
         res
     }
 
+    /// Returns a future that does not resolve until the task is cancelled
+    pub async fn cancelled(&self) -> () {
+        std::future::poll_fn(move |cx| {
+            let mut this = self.core.borrow_mut();
+            if this.status.stopped() {
+                Poll::Ready(())
+            } else {
+                if let Some(ref mut old) = this.status_waker {
+                    old.clone_from(cx.local_waker());
+                } else {
+                    this.status_waker = Some(cx.local_waker().clone());
+                }
+                Poll::Pending
+            }
+        })
+        .await
+    }
+
     /// Sends an empty response
     pub fn respond_empty(&mut self) -> Result<()> {
         self.respond_data(PipelineDataHeader::Empty)
@@ -90,6 +124,37 @@ impl<P: Plugin> Context<P> {
     /// Sends a single value as response
     pub fn respond_value(&mut self, val: Value, meta: Option<PipelineMetadata>) -> Result<()> {
         self.respond_data(PipelineDataHeader::Value(val, meta))
+    }
+
+    /// Starts a list stream as a response
+    pub fn respond_list(
+        &mut self,
+        span: Span,
+        meta: Option<PipelineMetadata>,
+        max_unnack: usize,
+    ) -> Result<ListProducer> {
+        let (info, stream) = self.manager.new_list_stream(span, meta, max_unnack);
+        // Make sure to remove the stream manually if we error out before exiting
+        let id = info.id;
+        self.respond_data(PipelineDataHeader::ListStream(info))
+            .inspect_err(|_| self.manager.cleanup_errored_stream(id))?;
+        Ok(stream)
+    }
+
+    /// Starts a binary stream as a reponse
+    pub fn respond_bytes(
+        &mut self,
+        color: ByteStreamType,
+        span: Span,
+        meta: Option<PipelineMetadata>,
+        max_unnack: usize,
+    ) -> Result<ByteProducer> {
+        let (info, stream) = self.manager.new_byte_stream(color, span, meta, max_unnack);
+        // Make sure to remove the stream manually if we error out before exiting
+        let id = info.id;
+        self.respond_data(PipelineDataHeader::ByteStream(info))
+            .inspect_err(|_| self.manager.cleanup_errored_stream(id))?;
+        Ok(stream)
     }
 
     pub fn engine(&mut self) -> EngineInterface<'_, P> {
@@ -148,8 +213,12 @@ impl ContextHandle {
     }
 
     /// Handles an interrupt signal being sent
-    pub(super) fn interrupt(&mut self) {}
+    pub(super) fn interrupt(&mut self) {
+        self.core.borrow_mut().set_status(Status::Cancelled);
+    }
 
     /// Handles a reset signal being sen
-    pub(super) fn reset(&mut self) {}
+    pub(super) fn reset(&mut self) {
+        self.core.borrow_mut().set_status(Status::Reset);
+    }
 }

@@ -68,9 +68,11 @@ impl Reactor {
                 Err(e) => ControlFlow::Break(Err(e)),
             }
         } else if let Some(deadline) = deadline {
+            log::trace!("sleeping");
             std::thread::sleep_until(deadline);
             ControlFlow::Continue(())
         } else {
+            log::trace!("breaking");
             // There is nothing to do. We should break
             ControlFlow::Break(Ok(()))
         }

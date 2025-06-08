@@ -59,6 +59,31 @@ where
             max_unack,
         }))
     }
+
+    pub(super) fn id(&self) -> StreamId {
+        self.id
+    }
+
+    fn send_end(&mut self) -> Result<()> {
+        self.tx
+            .send(PluginOutput::End(self.id))
+            .map_err(|e| ShellError::NushellFailed {
+                msg: format!("failed to send `end` message for stream: {e}"),
+            })
+    }
+
+    pub(super) fn end(&mut self) -> Result<()> {
+        if self.ended {
+            log::warn!("tried to double-end stream");
+            return Ok(());
+        }
+        self.ended = true;
+        if self.queue.is_empty() {
+            self.send_end()?;
+        }
+        Ok(())
+    }
+
     pub(super) fn set_max_unack(&mut self, max: usize) {
         const ONE: NonZeroUsize = NonZeroUsize::new(1).unwrap();
         let n = match NonZeroUsize::new(max) {
@@ -141,10 +166,25 @@ where
             if let Some(item) = self.queue.pop_front() {
                 // First, try to pull something out of the queue
                 self.do_send(item)?;
+            } else if self.ended {
+                self.send_end()?;
             } else {
                 self.wake();
             }
         }
+
+        Ok(())
+    }
+
+    /// Handle a drop event
+    pub(super) fn drop(&mut self) -> Result<()> {
+        if self.dropped {
+            return Err(ShellError::NushellFailed {
+                msg: "Received drop message for already-dropped stream".to_string(),
+            });
+        }
+        self.dropped = true;
+        log::info!("dropping stream {}", self.id);
 
         Ok(())
     }

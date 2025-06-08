@@ -5,7 +5,7 @@ use std::{
     time::Instant,
 };
 
-use nix::poll::{PollFd, PollFlags, ppoll};
+use nix::poll::{ppoll, PollFd, PollFlags};
 
 pub(super) fn with_driver<F, O>(f: F) -> O
 where

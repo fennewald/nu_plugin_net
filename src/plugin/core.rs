@@ -9,10 +9,13 @@ use std::{
 };
 
 use nu_plugin_protocol::{
-    CallInfo, EngineCall, EngineCallId, EngineCallResponse, PipelineDataHeader, PluginCallId,
-    PluginCallResponse, PluginOutput, StreamData, StreamId,
+    ByteStreamInfo, CallInfo, EngineCall, EngineCallId, EngineCallResponse, ListStreamInfo,
+    PipelineDataHeader, PluginCallId, PluginCallResponse, PluginOutput, StreamData, StreamId,
 };
-use nu_protocol::{LabeledError, PluginMetadata, PluginSignature, ShellError, Span, Value};
+use nu_protocol::{
+    ByteStreamType, LabeledError, PipelineMetadata, PluginMetadata, PluginSignature, ShellError,
+    Span, Value,
+};
 
 use crate::channel::{OneshotReceiver, Sender};
 
@@ -53,7 +56,7 @@ pub(super) struct Core<P: Plugin> {
 }
 
 impl<P: Plugin> Core<P> {
-    fn acutalize(&mut self, data: PipelineDataHeader) -> Result<InputDataHeader> {
+    fn acutalize_input(&mut self, data: PipelineDataHeader) -> Result<InputDataHeader> {
         self.consumers.actualize(data, &self.tx, &self.err_tx)
     }
 
@@ -128,16 +131,49 @@ impl<P: Plugin> CoreRef<P> {
         self.0.borrow_mut().producers.drop(id)
     }
 
-    pub(super) fn new_list_stream(&self, max_unnack: usize) -> ListProducer {
-        let mut this = self.0.borrow_mut();
-        let tx = this.tx.clone();
-        this.producers.new_list_stream(tx, max_unnack)
+    /// Used for removing a stream that was created, but encountered an error before nushell could be informed of it's existence
+    pub(super) fn cleanup_errored_stream(&self, id: StreamId) {
+        self.0.borrow_mut().producers.cleanup(id);
     }
 
-    pub(super) fn new_byte_stream(&self, max_unnack: usize) -> ByteProducer {
+    pub(super) fn new_list_stream(
+        &self,
+        span: Span,
+        meta: Option<PipelineMetadata>,
+        max_unnack: usize,
+    ) -> (ListStreamInfo, ListProducer) {
         let mut this = self.0.borrow_mut();
         let tx = this.tx.clone();
-        this.producers.new_byte_stream(tx, max_unnack)
+        let stream = this.producers.new_list_stream(tx, max_unnack);
+
+        let info = ListStreamInfo {
+            id: stream.id(),
+            span,
+            metadata: meta,
+        };
+
+        (info, stream)
+    }
+
+    pub(super) fn new_byte_stream(
+        &self,
+        color: ByteStreamType,
+        span: Span,
+        meta: Option<PipelineMetadata>,
+        max_unnack: usize,
+    ) -> (ByteStreamInfo, ByteProducer) {
+        let mut this = self.0.borrow_mut();
+        let tx = this.tx.clone();
+        let stream = this.producers.new_byte_stream(tx, max_unnack);
+
+        let info = ByteStreamInfo {
+            id: stream.id(),
+            span,
+            type_: color,
+            metadata: meta,
+        };
+
+        (info, stream)
     }
 
     /// Handles an interrupt signal
@@ -184,7 +220,7 @@ impl<P: Plugin> CoreRef<P> {
     /// Run a command
     pub(super) fn run(&self, id: PluginCallId, info: CallInfo<PipelineDataHeader>) -> Result<()> {
         let mut this = self.0.borrow_mut();
-        let info = info.map_data(|d| this.acutalize(d))?;
+        let info = info.map_data(|d| this.acutalize_input(d))?;
 
         if let Some(cmd) = this.commands.get(info.name.as_str()) {
             let handle = ContextHandle::spawn(self.clone(), cmd, id, info);
@@ -222,7 +258,7 @@ impl<P: Plugin> CoreRef<P> {
         res: EngineCallResponse<PipelineDataHeader>,
     ) -> Result<()> {
         let mut this = self.0.borrow_mut();
-        let res = res.map_data(|d| this.acutalize(d))?;
+        let res = res.map_data(|d| this.acutalize_input(d))?;
         this.engine.response(id, res)
     }
 

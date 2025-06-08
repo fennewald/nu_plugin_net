@@ -116,6 +116,14 @@ impl ListConsumer {
     pub fn ended(&self) -> bool {
         self.inner.ended()
     }
+
+    pub fn meta(&self) -> Option<PipelineMetadata> {
+        self.inner.0.borrow().meta()
+    }
+
+    pub fn queued(&self) -> usize {
+        self.inner.len()
+    }
 }
 
 pin_project! {
@@ -159,5 +167,13 @@ impl ByteConsumer {
 
     pub fn color(&self) -> ByteStreamType {
         self.color
+    }
+
+    pub fn meta(&self) -> Option<PipelineMetadata> {
+        self.inner.0.borrow().meta()
+    }
+
+    pub fn queued(&self) -> usize {
+        self.inner.len()
     }
 }

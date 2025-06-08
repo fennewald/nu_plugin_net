@@ -5,10 +5,7 @@ use nu_protocol::{ShellError, SignalAction};
 
 use crate::channel::Sender;
 
-use super::{io::AsyncEncoder, CoreRef, Plugin};
-
-/// The number of messages to early-ack in incoming stream. Setting this to zero disables the behavior
-const STREAM_EAGERNESS: usize = 4;
+use super::{io::AsyncEncoder, Core, CoreRef, Plugin};
 
 pub(super) type Input = Result<PluginInput, ShellError>;
 
@@ -47,7 +44,7 @@ where
 {
     fn new(plugin: P, tx: Sender<PluginOutput>, err_tx: Sender<ShellError>, incoming: R) -> Self {
         Self {
-            core: CoreRef::new(plugin, tx.clone(), err_tx.clone()),
+            core: Core::new(plugin, tx.clone(), err_tx.clone()),
 
             tx,
             err_tx,

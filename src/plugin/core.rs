@@ -14,7 +14,7 @@ use nu_plugin_protocol::{
 };
 use nu_protocol::{
     ByteStreamType, LabeledError, PipelineMetadata, PluginMetadata, PluginSignature, ShellError,
-    Span, Value,
+    Span,
 };
 
 use crate::channel::{OneshotReceiver, Sender};
@@ -56,6 +56,32 @@ pub(super) struct Core<P: Plugin> {
 }
 
 impl<P: Plugin> Core<P> {
+    pub(super) fn new(
+        plugin: P,
+        tx: Sender<PluginOutput>,
+        err_tx: Sender<ShellError>,
+    ) -> CoreRef<P> {
+        let commands = plugin.commands().map(|c| (c.name(), c)).collect();
+
+        CoreRef(Rc::new(RefCell::new(Self {
+            plugin,
+
+            commands,
+
+            tx,
+            err_tx,
+
+            consumers: ConsumerManager::new(),
+            producers: ProducerManager::new(),
+
+            n_running: 0,
+            complete_waker: None,
+            running: HashMap::new(),
+
+            engine: EngineState::new(),
+        })))
+    }
+
     fn acutalize_input(&mut self, data: PipelineDataHeader) -> Result<InputDataHeader> {
         self.consumers.actualize(data, &self.tx, &self.err_tx)
     }
@@ -93,28 +119,6 @@ impl<P: Plugin> Core<P> {
 }
 
 impl<P: Plugin> CoreRef<P> {
-    pub(super) fn new(plugin: P, tx: Sender<PluginOutput>, err_tx: Sender<ShellError>) -> Self {
-        let commands = plugin.commands().map(|c| (c.name(), c)).collect();
-
-        Self(Rc::new(RefCell::new(Core {
-            plugin,
-
-            commands,
-
-            tx,
-            err_tx,
-
-            consumers: ConsumerManager::new(),
-            producers: ProducerManager::new(),
-
-            n_running: 0,
-            complete_waker: None,
-            running: HashMap::new(),
-
-            engine: EngineState::new(),
-        })))
-    }
-
     pub(super) fn data(&self, id: StreamId, data: StreamData) -> Result<()> {
         self.0.borrow_mut().consumers.data(id, data)
     }

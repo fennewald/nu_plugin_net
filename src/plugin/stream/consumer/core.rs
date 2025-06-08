@@ -58,6 +58,10 @@ impl<D> Core<D> {
         }))
     }
 
+    pub(super) fn meta(&self) -> Option<PipelineMetadata> {
+        self.meta.clone()
+    }
+
     /// Tests if the consumer has ended
     pub(super) fn ended(&self) -> bool {
         self.ended

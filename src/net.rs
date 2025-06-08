@@ -1,6 +1,5 @@
 use std::time::Duration;
 
-use futures::StreamExt;
 use nu_plugin_protocol::CallInfo;
 use nu_protocol::Signature;
 

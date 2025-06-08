@@ -57,4 +57,4 @@ pub mod time;
 mod io_driver;
 use io_driver::IoDriver;
 
-pub(crate) mod io;
+pub mod io;

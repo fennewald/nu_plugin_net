@@ -13,7 +13,7 @@ use super::with_driver;
 type IoResult<T> = std::io::Result<T>;
 
 #[repr(transparent)]
-pub(crate) struct EventedSource<T: AsFd> {
+pub struct EventedSource<T: AsFd> {
     src: T,
 }
 
@@ -96,7 +96,7 @@ where
 }
 
 impl<T: AsFd> EventedSource<T> {
-    pub(crate) fn new(src: T) -> Self {
+    pub fn new(src: T) -> Self {
         Self { src }
     }
 }

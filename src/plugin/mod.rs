@@ -10,8 +10,6 @@ mod stream;
 pub use stream::{ByteConsumer, ByteProducer, InputDataHeader, ListConsumer, ListProducer};
 use stream::{ConsumerManager, ProducerManager};
 
-mod response;
-
 mod core;
 use core::{Core, CoreRef};
 
@@ -20,14 +18,6 @@ mod manager;
 mod context;
 pub use context::Context;
 use context::ContextHandle;
-/// OLD:w
-///
-///
-mod cmd;
-
-pub type ShellResult<T> = std::result::Result<T, ShellError>;
-
-mod harness;
 
 pub mod entry;
 mod io;

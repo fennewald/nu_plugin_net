@@ -2,6 +2,12 @@ use crate::InterfacesCommand;
 
 pub struct Plugin;
 
+impl Default for Plugin {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Plugin {
     pub fn new() -> Plugin {
         Plugin {}

@@ -82,30 +82,39 @@ impl SimplePluginCommand for InterfacesCommand {
     fn signature(&self) -> Signature {
         Signature::build(self.name()).input_output_type(
             Type::Nothing,
-            Type::Table(Box::new([
-                ("name".to_string(), Type::String),
-                ("description".to_string(), Type::String),
-                ("if_index".to_string(), Type::Int),
-                ("mac".to_string(), Type::String),
-                (
-                    "ips".to_string(),
-                    Type::Table(Box::new([
-                        ("type".to_string(), Type::String),
-                        ("addr".to_string(), Type::String),
-                        ("prefix".to_string(), Type::Int),
-                    ])),
-                ),
-                (
-                    "flags".to_string(),
-                    Type::Record(Box::new([
-                        ("is_up".to_string(), Type::Bool),
-                        ("is_broadcast".to_string(), Type::Bool),
-                        ("is_loopback".to_string(), Type::Bool),
-                        ("is_point_to_point".to_string(), Type::Bool),
-                        ("is_multicast".to_string(), Type::Bool),
-                    ])),
-                ),
-            ])),
+            Type::Table(
+                (Box::new([
+                    ("name".to_string(), Type::String),
+                    ("description".to_string(), Type::String),
+                    ("if_index".to_string(), Type::Int),
+                    ("mac".to_string(), Type::String),
+                    (
+                        "ips".to_string(),
+                        Type::Table(
+                            (Box::new([
+                                ("type".to_string(), Type::String),
+                                ("addr".to_string(), Type::String),
+                                ("prefix".to_string(), Type::Int),
+                            ]) as Box<[_]>)
+                                .into(), // <-- Added explicit slice cast
+                        ),
+                    ),
+                    (
+                        "flags".to_string(),
+                        Type::Record(
+                            (Box::new([
+                                ("is_up".to_string(), Type::Bool),
+                                ("is_broadcast".to_string(), Type::Bool),
+                                ("is_loopback".to_string(), Type::Bool),
+                                ("is_point_to_point".to_string(), Type::Bool),
+                                ("is_multicast".to_string(), Type::Bool),
+                            ]) as Box<[_]>)
+                                .into(), // <-- Added explicit slice cast
+                        ),
+                    ),
+                ]) as Box<[_]>)
+                    .into(), // <-- Added explicit slice cast
+            ),
         )
     }
 

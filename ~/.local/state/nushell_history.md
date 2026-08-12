@@ -62,3 +62,5 @@ clippy fmt
 cargo clippy --fix --lib -p nu_plugin_net -- 
 cargo check --verbose
 cargo test --verbose
+git add .
+git commit -m "update complete inc. client test; clippy satisfied"

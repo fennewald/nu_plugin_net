@@ -1,17 +1,23 @@
 # nu_plugin_net
-A nushell plugin to list system network interfaces
+
+### A nushell plugin to list system network interfaces
+
+![NuShell v114.1 on Fedora 44 x86_64](./screenshots/nushell_114_test.png)
+
+---
 
 A simple and straightforward plugin. All of the heavy lifting is done by pnet. This package just translates the datatypes into a nu-acceptable format.
 
 Format may be subject to change.
 
-> [!note] 
-> Version 2.0 Is in the Works
+> [!note]
+> This is not an upstream release, but a 3rd-party nushell 114 compatibility update.
 
 Version 2 of this plugin is actively being prepared. Some important objectives:
-* Automate the nushell version update process
-* Setup a website, more clear installation instructions
-* Add support for additional commands
+
+- Automate the nushell version update process
+- Setup a website, more clear installation instructions
+- Add support for additional commands
   - `ping`
   - Some form of tcp SYN port-scanning
   - Speed testing (50-50 about this one, please comment thoughts)
@@ -70,69 +76,86 @@ If you've got thoughts about the direction we should take, or are interested in 
 This plugin can either be installed from crates.io, or built from source.
 
 To install using cargo, run:
+
 ```
-cargo install nu_plugin_net
+cargo install nu_plugin_net   # try adding --locked if fails
+```
+
+or specific version
+
+```
+cargo install nu_plugin_net --locked --1.11.0  # for nushell 114.x
 ```
 
 To build from source, use:
+
 ```
-git clone https://github.com/fennewald/nu_plugin_net.git
+git clone https://github.com/averyfreeman/nu_plugin_net.git
 cd nu_plugin_net
 cargo install --path .
 ```
 
 Both of these processes will place a binary in `~/.cargo/bin/nu_plugin_net`
 To register the plugin for use, just run:
+
 ```
 plugin add ~/.cargo/bin/nu_plugin_net
 ```
 
 # Changelog
 
+## Version 1.11.0
+
+- Update to `nushell 0.114.1` (unofficial maintainer):
+  - `nu-plugin` and `nu-protocol` now version `~0.114.0`
+  - `edition` bump from `2021` to `2024`
+  - Min `rustc` ver `1.85.0` requirement
+  - Toolchain version bumps in GH-Pages workflow
+
 ## Version 1.10.0
 
-* Update to nushell 0.104.0
+- Update to nushell 0.104.0
 
 ## Version 1.9.0
 
-* (@MakeShiftArtist) Update to Nushell 0.103.0
+- (@MakeShiftArtist) Update to Nushell 0.103.0
 
 ## Version 1.8.0
 
-* (@kpbaks) Update to Nushell 0.98.0
+- (@kpbaks) Update to Nushell 0.98.0
 
 ## Version 1.7.0
 
-* Update to Nushell 0.97.1
-* Reorganized the code, preparing for a full rewrite.
+- Update to Nushell 0.97.1
+- Reorganized the code, preparing for a full rewrite.
 
 ## Version 1.6.0
 
-* Update for Nushell 0.96.0
+- Update for Nushell 0.96.0
 
 ## Version 1.5.0
 
-* Update for Nushell 0.94.2
+- Update for Nushell 0.94.2
 
 Maintainer note: Sorry for the inconsitencies. From now on, nushell version updates will include minor version bumps
 
 ## Version 1.4.1
 
-* (@baerlkr) Update for Nushell 0.93
+- (@baerlkr) Update for Nushell 0.93
 
 ## Version 1.4.0
 
-* (@oraoto) Update for Nushell 0.92
+- (@oraoto) Update for Nushell 0.92
 
 ## Version 1.3.0
 
-* (@FMotalleb) Bump dependency versions
-* (@FMotalleb) Refactor: replaced structs with standard constructors
+- (@FMotalleb) Bump dependency versions
+- (@FMotalleb) Refactor: replaced structs with standard constructors
 
 ## Version 1.2.0
 
-* Update for Nushell 0.84
+- Update for Nushell 0.84
 
 ## Version 1.1.0
 
-* Use `if_index` instead of `index`, fixing the way table indexes are displayed
+- Use `if_index` instead of `index`, fixing the way table indexes are displayed

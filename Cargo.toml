@@ -1,13 +1,14 @@
 [package]
 name = "nu_plugin_net"
 license = "MIT"
-authors = ["Carson <c@rson.riker.me>"]
+authors = ["Carson <c@rson.riker.me>", "Avery Freeman <contact@averyfreeman.com>"]
 keywords = ["nushell", "network", "plugin"]
 homepage = "https://github.com/fennewald/nu_plugin_net"
 repository = "https://github.com/fennewald/nu_plugin_net"
 description = "A nushell plugin for enumerating network interfaces in a platform-agnostic way"
-version = "1.10.0"
-edition = "2021"
+version = "1.11.0"
+edition = "2024"
+rust-version = "1.85.0"
 readme = "README.md"
 
 [[bin]]
@@ -16,8 +17,8 @@ name = "nu_plugin_net"
 [lib]
 
 [dependencies]
-nu-plugin = "0.104.0"
-nu-protocol = { version = "0.104.0", features = ["plugin"] }
+nu-plugin = "~0.114.0"
+nu-protocol = { version = "~0.114.0", features = ["plugin"] }
 pnet = "0.35.0"
 
 # The profile that 'cargo dist' will build with
@@ -25,10 +26,11 @@ pnet = "0.35.0"
 inherits = "release"
 lto = "thin"
 
+
 # Config for 'dist'
 [workspace.metadata.dist]
 # The preferred dist version to use in CI (Cargo.toml SemVer syntax)
-cargo-dist-version = "0.28.0"
+cargo-dist-version = "0.32.0"
 # CI backends to support
 ci = "github"
 # The installers to generate for each app
@@ -40,4 +42,4 @@ install-path = "CARGO_HOME"
 # Which actions to run on pull requests
 pr-run-mode = "plan"
 # Whether to install an updater program
-install-updater = false
+install-updater = true

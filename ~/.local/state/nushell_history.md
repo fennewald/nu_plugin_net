@@ -64,3 +64,8 @@ cargo check --verbose
 cargo test --verbose
 git add .
 git commit -m "update complete inc. client test; clippy satisfied"
+git add .
+git commit -m "More GH workflow version bumps"
+git remote rename origin upstream
+git remote add origin https://github.com/averyfreeman/nu_plugin_net
+git checkout -b bump-to-nushell-0.114
